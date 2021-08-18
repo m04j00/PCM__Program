@@ -3,9 +3,19 @@
 #include <conio.h>
 using namespace std;
 
+//키보드 값
+#define UP 0
+#define DOWN 1
+#define LEFT 2
+#define RIGHT 3
+#define SUBMIT 4
+#define BACK 5
+#define EXIT 6
+
 void gotoxy(int, int);
 void init();
 int mainMenu();
+int keyControl();
 
 int main() {
 	//cols : 세로 lines : 가로
@@ -39,5 +49,39 @@ int mainMenu() {
 	cout << "  종 료  ";
 	cout << endl << endl << endl;
 
+	while (1) {
+		int num = keyControl();
+		switch (num) {
+		case UP: {
+			if (y > 7) {
+				gotoxy(x - 2, y);
+				cout << " ";
+				gotoxy(x - 2, --y);
+				cout << ">";
+			}
+			break;
+		}
+		case DOWN: {
+			if (y < 10) {
+				gotoxy(x - 2, y);
+				cout << " ";
+				gotoxy(x - 2, ++y);
+				cout << ">";
+			}
+			break;
+		}
+		case SUBMIT: {
+			return y - 7;
+		}
+		}
+	}
 	return 0;
+}
+int keyControl() {
+	char temp = _getch();
+	if (temp == 72) return UP;
+	else if (temp == 80) return DOWN;
+	else if (temp == 75) return LEFT;
+	else if (temp == 77) return RIGHT;
+	else if (temp == 13) return SUBMIT;
 }
