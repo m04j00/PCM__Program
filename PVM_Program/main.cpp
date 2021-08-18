@@ -12,6 +12,7 @@ using namespace std;
 #define BACK 5
 #define EXIT 6
 
+void init();
 void gotoxy(int, int);
 int keyControl();
 void titleText();
@@ -19,8 +20,7 @@ int mainMenu();
 void infoDraw();
 
 int main() {
-	//cols : 세로 lines : 가로
-	system("mode con: cols=75 lines=20");
+	init();
 	
 	while (1) {
 		titleText();
@@ -43,6 +43,16 @@ int main() {
 	return 0;
 }
 
+void init() {
+	//cols : 세로 lines : 가로
+	system("mode con: cols=75 lines=20");
+
+	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_CURSOR_INFO ConsoleCursor;
+	ConsoleCursor.bVisible = 0;
+	ConsoleCursor.dwSize = 1;
+	SetConsoleCursorInfo(consoleHandle, &ConsoleCursor);
+}
 void gotoxy(int x, int y) {
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD pos;
