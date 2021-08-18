@@ -13,15 +13,33 @@ using namespace std;
 #define EXIT 6
 
 void gotoxy(int, int);
-void init();
-int mainMenu();
 int keyControl();
+void titleText();
+int mainMenu();
+void infoDraw();
 
 int main() {
 	//cols : 세로 lines : 가로
 	system("mode con: cols=75 lines=20");
-	init();
-	mainMenu();
+	
+	while (1) {
+		titleText();
+		int menuCode = mainMenu();
+		if (menuCode == 0) {
+			
+		}
+		else if (menuCode == 1) {
+
+		}
+		else if (menuCode == 2) {
+			infoDraw();
+		}
+		else if (menuCode == 3) {
+			return 0;
+		}
+		system("cls");
+	}
+	
 	return 0;
 }
 
@@ -32,7 +50,7 @@ void gotoxy(int x, int y) {
 	pos.Y = y;
 	SetConsoleCursorPosition(consoleHandle, pos);
 }
-void init() {
+void titleText() {
 	gotoxy(21, 4);
 	cout << "아파트 주차 및 차량 관리 시스템";
 }
@@ -84,4 +102,17 @@ int keyControl() {
 	else if (temp == 75) return LEFT;
 	else if (temp == 77) return RIGHT;
 	else if (temp == 13) return SUBMIT;
+}
+void infoDraw() {
+	system("cls");
+	cout << endl << endl;
+	cout << "                    조작 방법" << endl << endl;
+	cout << "              이동 : 화살표 ↑ ↓ ← →" << endl << endl;
+	cout << "              선택 : 엔터" << endl << endl << endl; 
+
+	while (1) {
+		if (keyControl() == SUBMIT) {
+			break;
+		}
+	}
 }
