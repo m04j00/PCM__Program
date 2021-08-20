@@ -142,9 +142,11 @@
     <ClCompile Include="console.cpp" />
     <ClCompile Include="info.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="parkingM.cpp" />
     <ClCompile Include="PVM.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="pmgt.h" />
     <ClInclude Include="PVM.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

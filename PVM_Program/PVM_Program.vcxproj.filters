@@ -27,9 +27,15 @@
     <ClCompile Include="info.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="parkingM.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PVM.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="pmgt.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>
