@@ -139,7 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="console.cpp" />
+    <ClCompile Include="info.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PVM.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PVM.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
