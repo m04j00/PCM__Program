@@ -4,16 +4,16 @@ int main() {
 	init();
 	
 	while (1) {
-		titleText();
+		mainTitle();
 		int menuCode = mainMenu();
 		if (menuCode == 0) {
-			
+			parkingMgtScreen();
 		}
 		else if (menuCode == 1) {
 
 		}
 		else if (menuCode == 2) {
-			infoDraw();
+			infoScreen();
 		}
 		else if (menuCode == 3) {
 			return 0;

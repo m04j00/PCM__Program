@@ -3,6 +3,7 @@
 #include <iostream>
 #include <Windows.h>
 #include <conio.h>
+using namespace std;
 
 //키보드 값
 #define UP 0
@@ -13,12 +14,19 @@
 #define BACK 5
 #define EXIT 6
 
-using namespace std;
+//console.cpp
 void init();
 void gotoxy(int, int);
 int keyControl();
-void titleText();
+
+//main.cpp
+void mainTitle();
 int mainMenu();
-void infoDraw();
+
+//info.cpp
+void infoScreen();
+
+//parkingM.cpp
+void parkingMgtScreen();
 
 #endif

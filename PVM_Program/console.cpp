@@ -21,7 +21,10 @@ void gotoxy(int x, int y) {
 	pos.Y = y;
 	SetConsoleCursorPosition(consoleHandle, pos);
 }
-
+//title 좌표
+void titleXY() {
+	gotoxy(21, 4);
+}
 //이동 관련한 키보드 키 함수
 int keyControl() {
 	char temp = _getch();

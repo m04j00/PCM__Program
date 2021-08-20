@@ -1,6 +1,6 @@
 #include "PVM.h"
 
-void titleText() {
+void mainTitle() {
 	gotoxy(21, 4);
 	cout << "아파트 주차 및 차량 관리 시스템";
 }
