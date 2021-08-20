@@ -29,4 +29,7 @@ void infoScreen();
 //parkingM.cpp
 void parkingMgtScreen();
 
+//carM.cpp
+void carMgtScreen();
+
 #endif

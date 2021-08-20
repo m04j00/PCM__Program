@@ -10,7 +10,7 @@ int main() {
 			parkingMgtScreen();
 		}
 		else if (menuCode == 1) {
-
+			carMgtScreen();
 		}
 		else if (menuCode == 2) {
 			infoScreen();

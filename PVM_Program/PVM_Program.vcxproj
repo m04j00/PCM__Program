@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="carM.cpp" />
     <ClCompile Include="console.cpp" />
     <ClCompile Include="info.cpp" />
     <ClCompile Include="main.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="PVM.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cmgt.h" />
     <ClInclude Include="pmgt.h" />
     <ClInclude Include="PVM.h" />
   </ItemGroup>
