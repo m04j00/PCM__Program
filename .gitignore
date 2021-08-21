@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/PVM_Program/libmysql.dll
+/PVM_Program/myMysql.h
+/PVM_Program/mysql.cpp

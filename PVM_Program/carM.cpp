@@ -36,9 +36,9 @@ void carMgtScreen() {
 		}
 		case SUBMIT: {
 			int code = y - 7;
-			if (code == 0)	adminLogin();
-			else if (code == 1)	residentLogin();
-			else return;
+			//if (code == 0)	adminLogin();
+			//else if (code == 1)	residentLogin();
+			//else return;
 		}
 		}
 	}
