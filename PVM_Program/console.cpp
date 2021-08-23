@@ -1,4 +1,4 @@
-#include "PVM.h"
+#include "main.h"
 
 void init() {
 	//console Å©±â
@@ -30,7 +30,8 @@ int keyControl() {
 	char temp = _getch();
 	if (temp == 72) return UP;
 	else if (temp == 80) return DOWN;
-	else if (temp == 75) return LEFT;
+	else if (temp == 37) return LEFT;
 	else if (temp == 77) return RIGHT;
-	else if (temp == 13) return SUBMIT;
+	else if (temp == 32) return SUBMIT;
+	else if (temp == 27) return EXIT;
 }

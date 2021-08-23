@@ -146,16 +146,15 @@
     <ClCompile Include="carM.cpp" />
     <ClCompile Include="console.cpp" />
     <ClCompile Include="info.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="mysql.cpp" />
+    <ClCompile Include="mainMenu.cpp" />
     <ClCompile Include="parkingM.cpp" />
-    <ClCompile Include="PVM.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="airtight.h" />
     <ClInclude Include="cmgt.h" />
-    <ClInclude Include="myMysql.h" />
     <ClInclude Include="pmgt.h" />
-    <ClInclude Include="PVM.h" />
+    <ClInclude Include="main.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,5 @@
-#ifndef PVM_H
-#define PVM_H
+#ifndef MAIN_H
+#define MAIN_H
 #include <iostream>
 #include <Windows.h>
 #include <conio.h>

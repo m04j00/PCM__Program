@@ -15,13 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PVM.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="console.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="mainMenu.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="info.cpp">
@@ -33,12 +33,9 @@
     <ClCompile Include="carM.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="mysql.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PVM.h">
+    <ClInclude Include="main.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="pmgt.h">
@@ -47,7 +44,7 @@
     <ClInclude Include="cmgt.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="myMysql.h">
+    <ClInclude Include="airtight.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>
