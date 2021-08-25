@@ -2,8 +2,7 @@
 #include "cmgt.h"
 #include <cstring>  
 //#include "airtight.h"
-#define ADMINID admin07
-#define adminPW admin0702
+void secretPw(char *);
 
 int carMgtScreen() {
 	system("cls");
@@ -65,14 +64,10 @@ int carMgtMenu() {
 	}
 	return 0;
 }
-int adminLogin() { return 0; }
-int main() {
-	init();
+int adminLogin() {
 	system("cls");
-	char* id = (char*)malloc(sizeof(char) * 100);
-	char* inputPw = (char*)malloc(sizeof(char) * 100);
-	int buffer = 0;
-	int i = 0;
+	char* id = (char*)malloc(sizeof(char) * 15);
+	char* inputPw = (char*)malloc(sizeof(char) * 15);
 
 	cout << endl << endl << endl << endl;
 	//cout << "-------------------------------관리자 로그인-------------------------------" << endl << endl;
@@ -80,17 +75,12 @@ int main() {
 	//cout << "-------------------* 관리자 id로만 로그인할 수 있습니다.-------------------" << endl;
 	cout << "                  * 등록된 관리자만 로그인할 수 있습니다.                  " << endl << endl;
 
-	
 	cout << "                      I      D : ";
 	cin >> id;
-	cout << endl << endl;
+	cout << endl;
 	cout << "                      비밀번호 : ";
-	for (i = 0; buffer != 13; i++) {
-		inputPw[i] = _getch();
-		cout << "*";
-		buffer = (int)inputPw[i];
-	}
-	inputPw[i - 1] = '\0'; //마지막 문자 NULL 문자로 치환
+	secretPw(inputPw);
+	
 	if(strcmp(id, "aaa") == 0 && strcmp(inputPw, "aaa") == 0){
 		cout << endl << endl << endl;
 		cout << "                      -- admin1로 로그인되었습니다 --                      ";
@@ -104,11 +94,40 @@ int main() {
 	return 0;
 }
 void residentLogin() {
+	init();
 	system("cls");
+	char* nBuilding = (char*)malloc(sizeof(char) * 4);
+	char* nUnit = (char*)malloc(sizeof(char) * 4);
+	char* inputPw = (char*)malloc(sizeof(char) * 8);
+	cout << endl << endl << endl << endl;
+	//cout << "-------------------------------관리자 로그인-------------------------------" << endl << endl;
+	cout << "                               입주민 로그인                               " << endl << endl;
+	//cout << "-----------* 관리자를 통해 등록된 입주민만 로그인할 수 있습니다.-----------" << endl;
+	cout << "           * 관리자를 통해 등록된 입주민만 로그인할 수 있습니다.           " << endl << endl;
+
+	cout << "                      동    수 : ";
+	cin >> nBuilding;
+	cout << endl;
+	cout << "                      호    수 : ";
+	cin >> nUnit;
+	cout << endl;
+	cout << "                      비밀번호 : ";
+	secretPw(inputPw);
 
 	while (1) {
 		if (keyControl() == SUBMIT) {
-			break;
+			return;
 		}
 	}
+}
+
+void secretPw(char *pw) {
+	int i = 0;
+	int buf = 0;
+	for (i = 0; buf != 13; i++) {
+		pw[i] = _getch();
+		cout << "*";
+		buf = (int)pw[i];
+	}
+	pw[i - 1] = '\0'; //마지막 문자 NULL 문자로 치환
 }

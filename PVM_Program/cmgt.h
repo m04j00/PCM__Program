@@ -4,5 +4,5 @@
 int carMgtMenu();
 int adminLogin();
 void residentLogin();
-
+char* checkPw();
 #endif
