@@ -5,10 +5,29 @@
 #define ADMINID admin07
 #define adminPW admin0702
 
-void carMgtScreen() {
+int carMgtScreen() {
 	system("cls");
-	gotoxy(21, 4);
-	cout << "아파트 차량 관리 시스템";
+
+	while (1) {
+		gotoxy(21, 4);
+		cout << "아파트 차량 관리 시스템";
+		int menuCode = carMgtMenu();
+		if (menuCode == 0) {
+			adminLogin();
+		}
+		else if (menuCode == 1) {
+			residentLogin();
+		}
+		else if (menuCode == 2) {
+			return 0;
+		}
+		system("cls");
+	}
+	return 0;
+
+}
+
+int carMgtMenu() {
 	int x = 33;
 	int y = 7;
 	gotoxy(x - 2, y);
@@ -40,16 +59,14 @@ void carMgtScreen() {
 			break;
 		}
 		case SUBMIT: {
-			int code = y - 7;
-			if (code == 0)	adminLogin();
-			else if (code == 1)	residentLogin();
-			else return;
+			return y - 7;
 		}
 		}
 	}
+	return 0;
 }
 
-void adminLogin() {
+int adminLogin() {
 	system("cls");
 
 	char* id = (char*)malloc(sizeof(char) * 100);
@@ -77,9 +94,8 @@ void adminLogin() {
 		system("cls");
 		cout << "관리자 의외의 사람은 로그인할 수 없습니다.";
 		Sleep(1000);
-		carMgtScreen();
-		return;
 	}
+	return 0;
 }
 void residentLogin() {
 	char id;

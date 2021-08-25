@@ -30,6 +30,6 @@ void infoScreen();
 void parkingMgtScreen();
 
 //carM.cpp
-void carMgtScreen();
+int carMgtScreen();
 
 #endif
