@@ -9,8 +9,8 @@ int carMgtScreen() {
 	system("cls");
 
 	while (1) {
-		gotoxy(21, 4);
-		cout << "아파트 차량 관리 시스템";
+		cout << endl << endl << endl << endl;
+		cout << "                           아파트 차량 관리 시스템";
 		int menuCode = carMgtMenu();
 		if (menuCode == 0) {
 			adminLogin();
@@ -28,14 +28,14 @@ int carMgtScreen() {
 }
 
 int carMgtMenu() {
-	int x = 33;
+	int x = 32;
 	int y = 7;
 	gotoxy(x - 2, y);
-	cout << "> 관리자 로그인";
+	cout << "> 관리자  로그인";
 	gotoxy(x, y + 1);
-	cout << "입주민 로그인";
+	cout << "입주민  로그인";
 	gotoxy(x, y + 2);
-	cout << "뒤로가기";
+	cout << "뒤  로  가  기";
 
 	while (1) {
 		int num = keyControl();
@@ -65,47 +65,46 @@ int carMgtMenu() {
 	}
 	return 0;
 }
-
-int adminLogin() {
+int adminLogin() { return 0; }
+int main() {
+	init();
 	system("cls");
-
 	char* id = (char*)malloc(sizeof(char) * 100);
 	char* inputPw = (char*)malloc(sizeof(char) * 100);
 	int buffer = 0;
 	int i = 0;
 
 	cout << endl << endl << endl << endl;
-	cout << "                    관리자 로그인" << endl << endl;
-	cout << "* 설정된 관리자 id로만 로그인할 수 있습니다." << endl;
-	cout << " id : ";
+	//cout << "-------------------------------관리자 로그인-------------------------------" << endl << endl;
+	cout << "                               관리자 로그인                               " << endl << endl;
+	//cout << "-------------------* 관리자 id로만 로그인할 수 있습니다.-------------------" << endl;
+	cout << "                  * 등록된 관리자만 로그인할 수 있습니다.                  " << endl << endl;
+
+	
+	cout << "                      I      D : ";
 	cin >> id;
-	cout << " 비밀번호 : ";
+	cout << endl << endl;
+	cout << "                      비밀번호 : ";
 	for (i = 0; buffer != 13; i++) {
 		inputPw[i] = _getch();
 		cout << "*";
 		buffer = (int)inputPw[i];
 	}
 	inputPw[i - 1] = '\0'; //마지막 문자 NULL 문자로 치환
-
-	if (id == "adminid" && inputPw == "adminpw") {
-		cout << "로그인 성공";
+	if(strcmp(id, "aaa") == 0 && strcmp(inputPw, "aaa") == 0){
+		cout << endl << endl << endl;
+		cout << "                      -- admin1로 로그인되었습니다 --                      ";
 	}
 	else {
 		system("cls");
-		cout << "관리자 의외의 사람은 로그인할 수 없습니다.";
+		cout << endl << endl << endl << endl << endl << endl << endl << endl;
+		cout << "                         등록된 관리자가 아닙니다.                         ";
 		Sleep(1000);
 	}
 	return 0;
 }
 void residentLogin() {
-	char id;
-	char pw;
 	system("cls");
-	cout << "                    입주민 로그인" << endl << endl;
-	cout << " id : ";
-	cin >> id;
-	cout << " 비밀번호 : ";
-	cin >> pw;
 
 	while (1) {
 		if (keyControl() == SUBMIT) {
