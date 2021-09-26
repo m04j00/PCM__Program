@@ -143,10 +143,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="admin.cpp" />
     <ClCompile Include="carM.cpp" />
     <ClCompile Include="console.cpp" />
     <ClCompile Include="info.cpp" />
-    <ClCompile Include="mainMenu.cpp" />
+    <ClCompile Include="login.cpp" />
+    <ClCompile Include="menu.cpp" />
+    <ClCompile Include="mysql.cpp" />
     <ClCompile Include="parkingM.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -155,6 +158,9 @@
     <ClInclude Include="cmgt.h" />
     <ClInclude Include="pmgt.h" />
     <ClInclude Include="main.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mysql.sql" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

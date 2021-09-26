@@ -4,12 +4,15 @@
 //#include "airtight.h"
 void secretPw(char *);
 
+int adminScrenn() {
+	return 0;
+}
 int carMgtScreen() {
 	system("cls");
 
 	while (1) {
 		cout << endl << endl << endl << endl;
-		cout << "                           아파트 차량 관리 시스템";
+		cout << "                          아파트 차량 관리 시스템                          ";
 		int menuCode = carMgtMenu();
 		if (menuCode == 0) {
 			adminLogin();
@@ -84,6 +87,8 @@ int adminLogin() {
 	if(strcmp(id, "aaa") == 0 && strcmp(inputPw, "aaa") == 0){
 		cout << endl << endl << endl;
 		cout << "                      -- admin1로 로그인되었습니다 --                      ";
+		Sleep(1000);
+		return adminScreen();
 	}
 	else {
 		system("cls");

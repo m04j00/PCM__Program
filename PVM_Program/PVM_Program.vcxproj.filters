@@ -21,7 +21,7 @@
     <ClCompile Include="console.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="mainMenu.cpp">
+    <ClCompile Include="menu.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="info.cpp">
@@ -31,6 +31,15 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="carM.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="admin.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="login.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="mysql.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,5 +56,10 @@
     <ClInclude Include="airtight.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mysql.sql">
+      <Filter>소스 파일</Filter>
+    </None>
   </ItemGroup>
 </Project>

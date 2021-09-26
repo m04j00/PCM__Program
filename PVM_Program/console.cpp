@@ -4,7 +4,7 @@ void init() {
 	//console 크기
 	//cols : 세로 lines : 가로
 	system("mode con: cols=75 lines=20");
-
+	mysqlMain();
 	//마우스 커서 없애기
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_CURSOR_INFO ConsoleCursor;
