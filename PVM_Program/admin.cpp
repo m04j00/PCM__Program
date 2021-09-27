@@ -94,7 +94,7 @@ int carRegistration() {
 	cin >> password;
 	cout << endl << endl;
 
-	int joinInfo = JoinUserInfo(id, carNum, phoneNum, nBuilding, nUnit);
+	int joinInfo = JoinCarInfo(id, carNum, phoneNum, nBuilding, nUnit);
 	int Join = JoinUser(id, password);
 	if(joinInfo == 0 && Join == 0)
 		cout << "                        차량 등록이 완료되었습니다.                        ";
@@ -117,18 +117,28 @@ int carDelReg() {
 
 	cout << endl << endl << endl << endl;
 	cout << "                               차량 등록 해지                              " << endl << endl;
-	cout << endl << endl;
 	cout << "                    차량 번호 : ";
 	cin >> carNum;
-	cout << "---------------------------------------------------------------------------" << endl << endl;
-	cout << "                         " << selectBuilding << " / " << selectUnit << " / " << selectPhoneNum << endl << endl;
+	cout << endl;
+	int carInfo = FindCarInfo(carNum);
+	if (carInfo) {
+		cout << "                      등록되지 않은 차량번호 입니다.                       " << endl;
+		Sleep(1000);
+		return 0;
+	}
+	cout << endl << "---------------------------------------------------------------------------" << endl << endl;
+	
 
 	cout << "                       해당 정보가 맞습니까 ? Y / N                        " << endl;
-	cout << "                    >> ";
+	cout << "                       >> ";
 	cin >> YorN;
-	cout << endl << endl;
-	if (YorN == 'Y' || YorN == 'y') cout << "                    정보 삭제" << endl;
-	else	cout << "                              취소되었습니다.                              " << endl;
+	cout << endl;
+	if (YorN == 'Y' || YorN == 'y') {
+		DeleteCarInfo(carNum);
+		cout << "                        정상적으로 해지되었습니다.                         " << endl;
+	}
+	else	
+		cout << "                              취소되었습니다.                              " << endl;
 	Sleep(1000);
 	system("cls");
 	return 0;

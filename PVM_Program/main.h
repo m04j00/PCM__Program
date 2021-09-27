@@ -108,7 +108,9 @@ int mysqlClose();
 int mysqlMain();
 int FindUser(const char*, const char*);
 int SearchUserId(const char*);
-int FindUserInfo(const char*);
+int FindCarInfo(const char*);
 int JoinUser(const char*, const char*);
-int JoinUserInfo(const char* id, const char* num, const char* pNum, int building, int unit);
+int JoinCarInfo(const char* id, const char* num, const char* pNum, int building, int unit);
+int DeleteCarInfo(const char*);
+int ResidentList();
 #endif

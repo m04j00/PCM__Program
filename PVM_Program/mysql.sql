@@ -22,6 +22,6 @@ insert into user values ('damin2', 'ssss', 1);
 insert into user values ('admin1', 'aaaa', 1);
 insert into user values ('admin2', 'ssss', 1);
 
-- ÀÔÁÖ¹Î °èÁ¤
+-- ÀÔÁÖ¹Î °èÁ¤
 insert into user values ('101', '101', 0);
 insert into user values ('resident', 'aaaa', 0);
