@@ -15,10 +15,10 @@ int carMgtScreen() {
 		cout << "                          아파트 차량 관리 시스템                          ";
 		int menuCode = carMgtMenu();
 		if (menuCode == 0) {
-			adminLogin();
+			return 0;
 		}
 		else if (menuCode == 1) {
-			residentLogin();
+			return 0;
 		}
 		else if (menuCode == 2) {
 			return 0;
@@ -66,73 +66,4 @@ int carMgtMenu() {
 		}
 	}
 	return 0;
-}
-int adminLogin() {
-	system("cls");
-	char* id = (char*)malloc(sizeof(char) * 15);
-	char* inputPw = (char*)malloc(sizeof(char) * 15);
-
-	cout << endl << endl << endl << endl;
-	//cout << "-------------------------------관리자 로그인-------------------------------" << endl << endl;
-	cout << "                               관리자 로그인                               " << endl << endl;
-	//cout << "-------------------* 관리자 id로만 로그인할 수 있습니다.-------------------" << endl;
-	cout << "                  * 등록된 관리자만 로그인할 수 있습니다.                  " << endl << endl;
-
-	cout << "                      I      D : ";
-	cin >> id;
-	cout << endl;
-	cout << "                      비밀번호 : ";
-	secretPw(inputPw);
-	
-	if(strcmp(id, "aaa") == 0 && strcmp(inputPw, "aaa") == 0){
-		cout << endl << endl << endl;
-		cout << "                      -- admin1로 로그인되었습니다 --                      ";
-		Sleep(1000);
-		return adminScreen();
-	}
-	else {
-		system("cls");
-		cout << endl << endl << endl << endl << endl << endl << endl << endl;
-		cout << "                         등록된 관리자가 아닙니다.                         ";
-		Sleep(1000);
-	}
-	return 0;
-}
-void residentLogin() {
-	init();
-	system("cls");
-	char* nBuilding = (char*)malloc(sizeof(char) * 4);
-	char* nUnit = (char*)malloc(sizeof(char) * 4);
-	char* inputPw = (char*)malloc(sizeof(char) * 8);
-	cout << endl << endl << endl << endl;
-	//cout << "-------------------------------관리자 로그인-------------------------------" << endl << endl;
-	cout << "                               입주민 로그인                               " << endl << endl;
-	//cout << "-----------* 관리자를 통해 등록된 입주민만 로그인할 수 있습니다.-----------" << endl;
-	cout << "           * 관리자를 통해 등록된 입주민만 로그인할 수 있습니다.           " << endl << endl;
-
-	cout << "                      동    수 : ";
-	cin >> nBuilding;
-	cout << endl;
-	cout << "                      호    수 : ";
-	cin >> nUnit;
-	cout << endl;
-	cout << "                      비밀번호 : ";
-	secretPw(inputPw);
-
-	while (1) {
-		if (keyControl() == SUBMIT) {
-			return;
-		}
-	}
-}
-
-void secretPw(char *pw) {
-	int i = 0;
-	int buf = 0;
-	for (i = 0; buf != 13; i++) {
-		pw[i] = _getch();
-		cout << "*";
-		buf = (int)pw[i];
-	}
-	pw[i - 1] = '\0'; //마지막 문자 NULL 문자로 치환
 }

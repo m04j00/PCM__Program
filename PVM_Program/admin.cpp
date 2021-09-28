@@ -17,7 +17,7 @@ int adminScreen() {
 			carDelReg();
 		}
 		else if (menuCode == 2) {
-			return 0;
+			ShowResidentList();
 		}
 		else if (menuCode == 3) {
 			return 0;
@@ -142,4 +142,17 @@ int carDelReg() {
 	Sleep(1000);
 	system("cls");
 	return 0;
+}
+void ShowResidentList() {
+	system("cls");
+	cout << endl << endl;
+	cout << "                                 차량 조회                                 " << endl;
+	cout << endl << endl;
+	ResidentList();
+	while (1) {
+		if (keyControl() == SUBMIT) {
+			system("cls");
+			return;
+		}
+	}
 }

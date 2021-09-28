@@ -10,4 +10,5 @@ int adminMenu();
 int carRegistration();
 int carDelReg();
 char* checkPw();
+void ShowResidentList();
 #endif

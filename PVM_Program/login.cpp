@@ -46,12 +46,14 @@ void login() {
 		Sleep(1000);
 		system("cls");
 		afterLoginMain(id);
+		return;
 	}
 	case 2: {
 		cout << "                            로그인 되었습니다.                             ";
 		Sleep(1000);
 		system("cls");
 		adminScreen();
+		return;
 	}
 	}
 	system("cls");
