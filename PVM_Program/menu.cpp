@@ -53,8 +53,6 @@ int afterLoginMainMenu() {
 	gotoxy(x, y + 1);
 	cout << "차량 관리";
 	gotoxy(x, y + 2);
-	cout << "사용 방법";
-	gotoxy(x, y + 3);
 	cout << "뒤로 가기";
 	cout << endl << endl << endl;
 
@@ -71,7 +69,7 @@ int afterLoginMainMenu() {
 			break;
 		}
 		case DOWN: {
-			if (y < 10) {
+			if (y < 9) {
 				gotoxy(x - 2, y);
 				cout << " ";
 				gotoxy(x - 2, ++y);

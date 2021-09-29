@@ -16,21 +16,22 @@ using namespace std;
 #define EXIT 6
 
 class User {
-	char* id;
-	char* pw;
-public: 
-	User(const char* _id, const char* _pw) {
+protected:
+	char* id = 0;
+public:
+	User() {}
+	User(const char* _id) {
 		id = new char[strlen(_id) + 1];
 		strcpy(id, _id);
-		pw = new char[strlen(_pw) + 1];
-		strcpy(pw, _pw);
 	}
 };
 class carInfo {
-	char* carNum;
-	char* phoneNum;
-	int parkingState;
+protected:
+	char* carNum = 0;
+	char* phoneNum = 0;
+	int parkingState = 0;
 public:
+	carInfo() {}
 	carInfo(const char* num, const char* phone, int state) : parkingState(state) {
 		carNum = new char[strlen(num) + 1];
 		strcpy(carNum, num);
@@ -38,50 +39,82 @@ public:
 		strcpy(phoneNum, phone);
 	}
 
-	int parkingCheck() {
+	void parkingCheck() {
 		cout << "                                   " << carNum;
 		if (parkingState == 0) {
 			//cout << "----------------------------------- 0000"  << carNum;
 			cout << endl << endl;
 			cout << "                             차량이 입차합니다.                            ";
-			return 1;
+			parkingState = 1;
+			return;
 		}
 		else if (parkingState == 1) {
 			cout << endl << endl;
 			cout << "                             차량이 출차합니다.                            ";
-			return 0;
+			parkingState = 0;
+			return;
 		}
 	}
 	void showCarNum() {
 		//cout << "-----------------------------차량 번호 : 0000 -----------------------------" << carNum;
 		cout << "                             차량 번호 : " << carNum;
 	}
-	int getSate() { return parkingState; }
-	void setSate(int state) { 
-		cout << endl << "class : " << parkingState;
+	void getState() {
+		if (parkingState == 1) {
+			cout << endl << endl;
+			cout << "                               " << carNum << " 입차 상태                              " << endl;
+			return;
+		}
+		else if (parkingState == 0) {
+			cout << endl << endl;
+			cout << "                               " << carNum << " 출차 상태                              " << endl;
+			parkingState = 0;
+			return;
+		}
+	}
+	char* getNum() { return carNum; }
+	void setNum(char* num) {
+		carNum = new char[strlen(num) + 1];
+		strcpy(carNum, num);
+	};
+	void setphoneNum(char* phone) {
+		phoneNum = new char[strlen(phone) + 1];
+		strcpy(phoneNum, phone);
+	};
+	void setState(int state) {
 		parkingState = state;
-		cout << endl << "class : " << parkingState;
+		//cout << endl << "class : " << parkingState;
+		//parkingState = state;
+		//cout << endl << "class : " << parkingState;
 	}
 };
 
-class Resident : public carInfo, User {
-	char* building;
-	char* unit;
+class Resident : public carInfo {
+
+	char* building = 0;
+	char* unit = 0;
 public:
-	Resident(const char* num, const char* phoneNum, int state, const char* _id, const char* _pw, const char* _building, const char* _unit)
-		: carInfo(num, phoneNum, state), User(_id, _pw) {
+	Resident() {}
+	void setInfo(char* num, char* phoneNum, int state, const char* _building, const char* _unit)
+	{
+		carInfo(num, phoneNum, state);
+		setNum(num);
+		setphoneNum(phoneNum);
+		setState(state);
 		building = new char[strlen(_building) + 1];
 		strcpy(building, _building);
 		unit = new char[strlen(_unit) + 1];
 		strcpy(unit, _unit);
+		cout << building << endl;
 	}
 };
-
-class NonResident : public carInfo {
+class VisitingCar : public carInfo {
+	int period;
 public:
-	NonResident(const char* num, const char* phoneNum, int state) : carInfo(num, phoneNum, state) {}
+	VisitingCar(const char* num, const char* phoneNum, int state, int period) : carInfo(num, phoneNum, state), period(period) {
+		cout << "                       방문 차량이 등록 되었습니다.                        " ;
+	}
 };
-
 //console.cpp
 void init();
 void gotoxy(int, int);
@@ -113,4 +146,13 @@ int JoinUser(const char*, const char*);
 int JoinCarInfo(const char* id, const char* num, const char* pNum, int building, int unit);
 int DeleteCarInfo(const char*);
 int ResidentList();
+Resident getCarInfo(const char*, Resident&);
+
+//residentPM
+void residentInit(const char* id);
+Resident ParkingScreen(Resident&);
+Resident MgtScreen(Resident& resi);
+
+//visitingCar
+void visitingScreen();
 #endif

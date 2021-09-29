@@ -152,6 +152,8 @@
     <ClCompile Include="mysql.cpp" />
     <ClCompile Include="parkingM.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="residentPM.cpp" />
+    <ClCompile Include="visitingCar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="airtight.h" />
