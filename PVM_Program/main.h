@@ -110,9 +110,17 @@ public:
 };
 class VisitingCar : public carInfo {
 	int period;
+	char *now;
 public:
-	VisitingCar(const char* num, const char* phoneNum, int state, int period) : carInfo(num, phoneNum, state), period(period) {
+	VisitingCar(const char* num, const char* phoneNum, int state, int period, char* _now) : carInfo(num, phoneNum, state), period(period) {
+		now = new char[strlen(_now) + 1];
+		strcpy(now, _now);
 		cout << "                       방문 차량이 등록 되었습니다.                        " ;
+	}
+	void showCarInfo() {
+		cout << "                  차량 번호 : " << carNum << endl;
+		cout << "                  입차 시간 : " << now << endl;
+		cout << "                       기간 : " << period << endl;
 	}
 };
 //console.cpp
@@ -147,6 +155,8 @@ int JoinCarInfo(const char* id, const char* num, const char* pNum, int building,
 int DeleteCarInfo(const char*);
 int ResidentList();
 Resident getCarInfo(const char*, Resident&);
+int visitingCarRegister(const char* , const char*);
+int VisitingList();
 
 //residentPM
 void residentInit(const char* id);
@@ -154,5 +164,6 @@ Resident ParkingScreen(Resident&);
 Resident MgtScreen(Resident& resi);
 
 //visitingCar
-void visitingScreen();
+void visitingInit();
+VisitingCar visitingScreen(VisitingCar&);
 #endif

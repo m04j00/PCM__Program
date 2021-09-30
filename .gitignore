@@ -363,5 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /PVM_Program/libmysql.dll
 /PVM_Program/myMysql.h
-/PVM_Program/mysql.cpp
 /PVM_Program/airtight.h

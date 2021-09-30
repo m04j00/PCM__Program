@@ -8,7 +8,7 @@ int main() {
 			login();
 		}
 		else if (menuCode == 1) {
-			visitingScreen();
+			visitingInit();
 		}
 		else if (menuCode == 2) {
 			infoScreen();

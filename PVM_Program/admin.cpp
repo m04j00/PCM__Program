@@ -11,6 +11,68 @@ int adminScreen() {
 		cout << "                                 관리자 창                                 ";
 		int menuCode = adminMenu();
 		if (menuCode == 0) {
+			system("cls");
+			ResiMgtScreen();
+			
+		}
+		else if (menuCode == 1) {
+			system("cls");
+			VisitingMgtScreen();
+		}
+		else if (menuCode == 2) {
+			return 0;
+		}
+		system("cls");
+	}
+	return 0;
+
+}
+int adminMenu() {
+	int x = 31;
+	int y = 7;
+	gotoxy(x - 2, y);
+	cout << "> 입주민 차량 관리";
+	gotoxy(x, y + 1);
+	cout << "방문  차량  관리";
+	gotoxy(x, y + 2);
+	cout << "뒤  로    가  기";
+
+	while (1) {
+		int num = keyControl();
+		switch (num) {
+		case UP: {
+			if (y > 7) {
+				gotoxy(x - 2, y);
+				cout << " ";
+				gotoxy(x - 2, --y);
+				cout << ">";
+			}
+			break;
+		}
+		case DOWN: {
+			if (y < 9) {
+				gotoxy(x - 2, y);
+				cout << " ";
+				gotoxy(x - 2, ++y);
+				cout << ">";
+			}
+			break;
+		}
+		case SUBMIT: {
+			return y - 7;
+		}
+		}
+	}
+	return 0;
+}
+int ResiMgtScreen() {
+	system("cls");
+
+	while (1) {
+		cout << endl << endl << endl << endl;
+		cout << "                            입주민 차량 관리 창                            ";
+		int menuCode = ResidentMgtMenu();
+		if (menuCode == 0) {
 			carRegistration();
 		}
 		else if (menuCode == 1) {
@@ -27,8 +89,7 @@ int adminScreen() {
 	return 0;
 
 }
-
-int adminMenu() {
+int ResidentMgtMenu() {
 	int x = 31;
 	int y = 7;
 	gotoxy(x - 2, y);
@@ -68,7 +129,18 @@ int adminMenu() {
 	}
 	return 0;
 }
-
+void VisitingMgtScreen() {
+	system("cls");
+	cout << endl << endl << endl << endl;
+	cout << "                              방문 차량 현황                               " << endl << endl << endl;
+	VisitingList();
+	while (1) {
+		if (keyControl() == SUBMIT) {
+			system("cls");
+			return;
+		}
+	}
+}
 int carRegistration() {
 	system("cls");
 	char* carNum = (char*)malloc(sizeof(char) * 10);
@@ -101,7 +173,7 @@ int carRegistration() {
 		
 	else 
 		cout << "                 이미 등록된 아이디이거나 차량번호입니다.                  ";
-	Sleep(3000);
+	Sleep(1000);
 	system("cls");
 	return 0;
 

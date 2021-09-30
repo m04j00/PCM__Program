@@ -11,4 +11,7 @@ int carRegistration();
 int carDelReg();
 char* checkPw();
 void ShowResidentList();
+int ResiMgtScreen();
+void VisitingMgtScreen();
+int ResidentMgtMenu();
 #endif

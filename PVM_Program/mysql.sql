@@ -15,10 +15,13 @@ create table resident(
 	unit SMALLINT(4) NOT NULL
 );
 
--- 관리자 계정
-insert into user values ('damin1', 'aaaa', 1);
-insert into user values ('damin2', 'ssss', 1);
+create table visiting(
+	car_num VARCHAR(10) PRIMARY KEY,
+	phone_num VARCHAR(14) NOT NULL,
+	date DATE
+);
 
+-- 관리자 계정
 insert into user values ('admin1', 'aaaa', 1);
 insert into user values ('admin2', 'ssss', 1);
 

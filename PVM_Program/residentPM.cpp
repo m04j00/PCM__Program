@@ -1,5 +1,4 @@
 #include "main.h"
-#include "pcmClass.h"
 
 int afterLoginMain(const char* id) {
 	system("cls");
