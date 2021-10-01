@@ -3,7 +3,7 @@
 void login() {
 	system("cls");
 	char* id = (char*)malloc(sizeof(char) * 16);
-	char* pw = (char*)malloc(sizeof(char) * 16);
+	char* pw = (char*)malloc(sizeof(char) * 20);
 	cout << endl << endl << endl;
 	cout << "                                   로그인                                  " << endl << endl;
 	cout << "                  * 등록된 관리자만 로그인할 수 있습니다.                  " << endl;
