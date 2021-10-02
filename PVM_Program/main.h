@@ -15,6 +15,9 @@ using namespace std;
 #define BACK 5
 #define EXIT 6
 
+//»ö±ò
+#define RED  "\033[31m"
+
 class User {
 protected:
 	char* id = 0;
@@ -155,7 +158,7 @@ int JoinCarInfo(const char* id, const char* num, const char* pNum, int building,
 int DeleteCarInfo(const char*);
 int ResidentList();
 Resident getCarInfo(const char*, Resident&);
-int visitingCarRegister(const char* , const char*);
+int visitingCarRegister(const char* , const char*, int);
 int VisitingList();
 
 //residentPM

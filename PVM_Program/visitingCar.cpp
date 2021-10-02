@@ -9,6 +9,7 @@ void visitingInit() {
 	curr_time = time(NULL);
 	char buf[80];
 	curr_tm = localtime(&curr_time);
+	
 	strftime(buf, sizeof(buf), "%Y.%m.%d.%X", curr_tm);
 	cout << buf << endl;
 	//사용 변수
@@ -29,7 +30,7 @@ void visitingInit() {
 
 	cout << endl << endl;
 	VisitingCar car(carNum, phoneNum, 0, period, buf);
-	visitingCarRegister(carNum, phoneNum);
+	visitingCarRegister(carNum, phoneNum, period);
 	Sleep(1000);
 	visitingScreen(car);
 	system("cls");

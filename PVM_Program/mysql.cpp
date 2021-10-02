@@ -172,9 +172,9 @@ int ResidentList() {
 	return 0;
 }
 // 방문차량 기록
-int visitingCarRegister(const char* num, const char* pNum) {
+int visitingCarRegister(const char* num, const char* pNum, int exit) {
 	char query[100];
-	sprintf(query, "INSERT INTO visiting VALUES('%s', '%s', NOW())", num, pNum);
+	sprintf(query, "INSERT INTO visiting VALUES('%s', '%s', NOW(), '%d')", num, pNum, exit);
 	int state = mysql_query(mysql, query);
 	if (state != 0) {
 		printf("error : %s", mysql_error(mysql));
@@ -192,13 +192,45 @@ int VisitingList() {
 
 	if (state != 0) return -1;
 	int cnt = 0;
-	printf("             차량번호      전화번호         입차시간 \n");
+	printf("        차량번호      전화번호        입차날짜    예상 출차 날짜 \n");
 	while (row = mysql_fetch_row(res))
 	{
 		cnt++;
 
-		printf("            %9s  %14s  %13s", row[0], row[1], row[2]);
+		// 예상 출차 날짜 구하기 
+		string str = row[2];
+		string eixtDay = str.substr(9, 1);
+		int exitDayI = stoi(eixtDay);
+		int eixted = atoi(row[3]);
+		string exit_day = to_string((exitDayI + eixted));
+		string _finalExit;
+		if(exitDayI + eixted >= 10)
+			_finalExit = str.substr(0, 8) + exit_day;
+		else _finalExit = str.substr(0, 8) + '0' + exit_day;
+		char* finalExit = new char[_finalExit.length() + 1];
+		strcpy(finalExit, _finalExit.c_str());
+		char* equalExit = new char[_finalExit.length() + 1]; 
+		strcpy(equalExit, finalExit);
 
+		//출차 날짜를 어긴 차량 구하기
+		//중 현재 날짜 구하기
+		time_t curr_time;
+		struct tm* curr_tm;
+		curr_time = time(NULL);
+		char buf[80];
+		curr_tm = localtime(&curr_time);
+		strftime(buf, sizeof(buf), "%Y%m%d", curr_tm);
+		
+		string ahk;
+		for (i = 0; i < 10; i++) {
+			if (isdigit(equalExit[i]) == 0) continue;
+			ahk += equalExit[i];
+		}
+		
+		// 날짜월날짜를 숫자로 만들어 예상 출차 날짜가 더 클 경우 조치할 수 있도록 함. 
+		if(buf < ahk)
+			printf("       %7s    %14s  %13s %13s", row[0], row[1], row[2], finalExit);
+		else printf("%s       %7s    %14s  %13s %13s", RED, row[0], row[1], row[2], finalExit);
 		cout << endl;
 	}
 	if (cnt == 0) return 1;

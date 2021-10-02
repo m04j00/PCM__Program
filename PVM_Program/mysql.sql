@@ -18,11 +18,12 @@ create table resident(
 create table visiting(
 	car_num VARCHAR(10) PRIMARY KEY,
 	phone_num VARCHAR(14) NOT NULL,
-	date DATE
+	date DATE,
+	exit_date SMALLINT(2)
 );
 
 -- 관리자 계정
-insert into user values ('admin1', 'aaaa', 1);
+insert into user values ('admin1','aaaa', 1);
 insert into user values ('admin2', 'ssss', 1);
 
 -- 입주민 계정
