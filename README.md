@@ -1,7 +1,7 @@
 # [C++] PCM Promgram
 
 [GitHub](https://github.com/m04j00/PVM__Program)  
-[Notion](https://github.com/m04j00/PVM__Program)
+[Notion](https://roomy-den-e50.notion.site/C-PCM-Promgram-195fcc6af7d147f89f605d329d00b309)
 ## 소개
 
 아파트 주차(Parking) 및 차량 관리(Car Management) 프로그램입니다.
