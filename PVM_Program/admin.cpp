@@ -133,7 +133,9 @@ void VisitingMgtScreen() {
 	system("cls");
 	cout << endl << endl << endl << endl;
 	cout << "                              방문 차량 현황                               " << endl << endl << endl;
-	VisitingList();
+	int num = VisitingList();
+	if (num == 1)
+		cout << endl << endl <<  "                     주차된 방문차량이 없습니다." << endl << endl;
 	while (1) {
 		if (keyControl() == SUBMIT) {
 			system("cls");

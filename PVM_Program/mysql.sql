@@ -29,3 +29,9 @@ insert into user values ('admin2', 'ssss', 1);
 -- 입주민 계정
 insert into user values ('101', '101', 0);
 insert into user values ('resident', 'aaaa', 0);
+
+-- 방문 차량
+insert into visiting values ('1122', '010-1122-1122', '2021-10-20', 2);
+insert into visiting values ('1133', '010-1133-1133', '2021-10-19', 2);
+insert into visiting values ('1144', '010-1144-1144', '2021-10-19', 3);
+insert into visiting values ('1155', '010-1155-1155', '2021-10-19', 1);

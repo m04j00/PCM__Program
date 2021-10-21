@@ -1,9 +1,10 @@
 #include "main.h"
 
 void init() {
+	printf("%s", DEF);
 	//console 크기
 	//cols : 세로 lines : 가로
-	system("mode con: cols=75 lines=20");
+	system("mode con: cols=75");
 	mysqlMain();
 	//마우스 커서 없애기
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);

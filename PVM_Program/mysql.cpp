@@ -185,7 +185,7 @@ int visitingCarRegister(const char* num, const char* pNum, int exit) {
 //방문 차량 조회
 int VisitingList() {
 	char query[100];
-	sprintf(query, "select * from visiting");
+	sprintf(query, "select * from visiting order by date asc");
 	int state = mysql_query(mysql, query);
 	res = mysql_store_result(mysql);
 	fields = mysql_num_fields(res);
@@ -198,13 +198,12 @@ int VisitingList() {
 		cnt++;
 
 		// 예상 출차 날짜 구하기 
-		string str = row[2];
-		string eixtDay = str.substr(9, 1);
-		int exitDayI = stoi(eixtDay);
-		int eixted = atoi(row[3]);
-		string exit_day = to_string((exitDayI + eixted));
+		string str = row[2]; // 입차 날짜 2021-10-07
+		int eixtDay = stoi(str.substr(8, 2)); // 일
+		int eixteNum = atoi(row[3]); // 일 수 
+		string exit_day = to_string((eixtDay + eixteNum)); // 입차 일 + 출차 일 수
 		string _finalExit;
-		if(exitDayI + eixted >= 10)
+		if(eixtDay + eixteNum >= 10)
 			_finalExit = str.substr(0, 8) + exit_day;
 		else _finalExit = str.substr(0, 8) + '0' + exit_day;
 		char* finalExit = new char[_finalExit.length() + 1];
@@ -217,25 +216,47 @@ int VisitingList() {
 		time_t curr_time;
 		struct tm* curr_tm;
 		curr_time = time(NULL);
-		char buf[80];
+		char today[80];
 		curr_tm = localtime(&curr_time);
-		strftime(buf, sizeof(buf), "%Y%m%d", curr_tm);
-		
+		strftime(today, sizeof(today), "%Y%m%d", curr_tm);
+
+		//string tomorrow;
+		//tomorrow += to_string(curr_tm->tm_year + 1900) += to_string(curr_tm->tm_mon + 1) += to_string(curr_tm->tm_mday + 1);
+
 		string ahk;
 		for (i = 0; i < 10; i++) {
 			if (isdigit(equalExit[i]) == 0) continue;
 			ahk += equalExit[i];
 		}
-		
 		// 날짜월날짜를 숫자로 만들어 예상 출차 날짜가 더 클 경우 조치할 수 있도록 함. 
-		if(buf < ahk)
+		// 오늘날짜 == 예상 출차 날짜 같을 경우 나가는 날임을 알림
+		// 오늘날짜 > 예상 출차 날짜일 경우 출차 조취 시킴
+		if (today == ahk) {
+			printf("%s       %7s    %14s  %13s %13s", RED, row[0], row[1], row[2], finalExit);
+			printf("%s", DEF);
+		}
+		else if (today > ahk) {
+			char del[100];
+			sprintf(del, "delete from visiting where car_num = '%s'", row[0]);
+			int state = mysql_query(mysql, del);
+			if (state != 0) {
+				printf("error : %s", mysql_error(mysql));
+			}
+			else {
+				printf("       %7s    %14s  %13s %13s\n", row[0], row[1], row[2], finalExit);
+				printf("%s                           방문 차량 %s 출차 조취", BLUE, row[0]);
+				printf("%s", DEF);
+			}
+		}
+		else {
 			printf("       %7s    %14s  %13s %13s", row[0], row[1], row[2], finalExit);
-		else printf("%s       %7s    %14s  %13s %13s", RED, row[0], row[1], row[2], finalExit);
+		}
 		cout << endl;
 	}
 	if (cnt == 0) return 1;
 	return 0;
 }
+
 int mysqlClose() {
 	mysql_close(mysql);
 	return 0;

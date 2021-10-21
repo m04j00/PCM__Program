@@ -57,6 +57,5 @@ void login() {
 	}
 	}
 	system("cls");
-	//afterLoginMain(id);
 	return;
 }

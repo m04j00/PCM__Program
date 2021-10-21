@@ -16,7 +16,10 @@ using namespace std;
 #define EXIT 6
 
 //»ö±ò
+#define DEF "\033[0m"
 #define RED  "\033[31m"
+#define BLUE "\033[34m"
+
 
 class User {
 protected:
