@@ -256,7 +256,22 @@ int VisitingList() {
 	if (cnt == 0) return 1;
 	return 0;
 }
+int addParkingLot() {
+	char query[100];
+	for (char j = 'A'; j <= 'E'; j++) {
+		for (int k = 1; k <= 20; k++) {
+			char num[5];
+			if (k < 10) sprintf(num, "%c%d%d%d", j, 0, 0, k);
+			else sprintf(num, "%c%d%d", j, 0, k);
+			cout << num << endl;
+			sprintf(query, "INSERT INTO parking_lot(space_num, state) VALUES('%s', %d)", num, 0);
+			int state = mysql_query(mysql, query);
+			if (state != 0) return -1;
+		}
 
+	}
+	return 0;
+}
 int mysqlClose() {
 	mysql_close(mysql);
 	return 0;

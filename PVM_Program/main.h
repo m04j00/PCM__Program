@@ -163,6 +163,7 @@ int ResidentList();
 Resident getCarInfo(const char*, Resident&);
 int visitingCarRegister(const char* , const char*, int);
 int VisitingList();
+int addParkingLot();
 
 //residentPM
 void residentInit(const char* id);

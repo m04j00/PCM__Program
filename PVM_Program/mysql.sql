@@ -22,6 +22,13 @@ create table visiting(
 	exit_date SMALLINT(2)
 );
 
+create table parking_lot(
+	space_num VARCHAR(10) PRIMARY KEY,
+	car_num VARCHAR(10),
+	state BOOLEAN NOT NULL
+);
+
+
 -- 관리자 계정
 insert into user values ('admin1','aaaa', 1);
 insert into user values ('admin2', 'ssss', 1);
