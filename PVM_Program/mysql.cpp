@@ -272,6 +272,61 @@ int addParkingLot() {
 	}
 	return 0;
 }
+void DrewParkingLot() {
+	char query[100];
+	sprintf(query, "select * from parking_lot");
+	int state = mysql_query(mysql, query);
+	res = mysql_store_result(mysql);
+	fields = mysql_num_fields(res);
+	int cnt = 0;
+	while (row = mysql_fetch_row(res))
+	{
+		if (row[2] == (string)"0") printf("   [  %s%s%s  ]  ", GREEN, row[0], DEF);
+		else if (row[2] == (string)"1") printf("   [  %s%s%s  ]  ", RED, row[0], DEF);
+		cnt++;
+		if (cnt % 5  == 0) cout << endl;
+		if (cnt % 10  == 0) cout << endl;
+	}
+}
+//주차 가능 구역 개수
+int parkingAvailableNum() {
+	char query[100];
+	sprintf(query, "SELECT count(if (state = 0, state, null)) FROM parking_lot");
+	int state = mysql_query(mysql, query);
+	res = mysql_store_result(mysql);
+	fields = mysql_num_fields(res);
+	if (row = mysql_fetch_row(res))
+	{
+
+		return atoi(row[0]);
+	}
+}
+int parkingLotState(int num, char* space_num, char* car_num) {
+	// -1 : 잘못 입력
+	// 0 : 주차 성공
+	// 1 : 이미 주차된 구역
+	if (num == 1) { // 입차 시에만 코드블록 동작
+		char query1[100];
+		sprintf(query1, "SELECT * FROM parking_lot where space_num = '%s'", space_num); // 입력된 주차구역이 존재하는 레코드인지
+
+		int state1 = mysql_query(mysql, query1);
+		res = mysql_store_result(mysql);
+		row = mysql_fetch_row(res);
+		if (row == nullptr) return -1; // row가 nullptr이면 존재하지 않는 주차구역
+	}
+	
+	mysql_free_result(res);
+	char query[100];
+	sprintf(query, "UPDATE parking_lot SET car_num = '%s', state = %d WHERE space_num = '%s'", car_num, num, space_num); 
+
+	int state = mysql_query(mysql, query);
+	res = mysql_store_result(mysql);
+	my_ulonglong rows = mysql_affected_rows(mysql); // update 적용된 레코드의 수 반환
+	if (rows == 0) { // rows가 0일 경우 이미 주차된 구역
+		return 1;
+	}
+	return 0;
+}
 int mysqlClose() {
 	mysql_close(mysql);
 	return 0;

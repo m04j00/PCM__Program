@@ -12,7 +12,8 @@ create table resident(
 	car_num VARCHAR(10) PRIMARY KEY,
 	phone_num VARCHAR(14) NOT NULL,
 	building SMALLINT(4) NOT NULL,
-	unit SMALLINT(4) NOT NULL
+	unit SMALLINT(4) NOT NULL,
+	parking_space_num VARCHAR(10)
 );
 
 create table visiting(
@@ -25,7 +26,8 @@ create table visiting(
 create table parking_lot(
 	space_num VARCHAR(10) PRIMARY KEY,
 	car_num VARCHAR(10),
-	state BOOLEAN NOT NULL
+	state BOOLEAN NOT NULL,
+	car_info SMALLINT(2)
 );
 
 

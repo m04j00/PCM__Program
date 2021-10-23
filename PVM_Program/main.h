@@ -19,7 +19,7 @@ using namespace std;
 #define DEF "\033[0m"
 #define RED  "\033[31m"
 #define BLUE "\033[34m"
-
+#define GREEN "\033[32m"
 
 class User {
 protected:
@@ -36,6 +36,7 @@ protected:
 	char* carNum = 0;
 	char* phoneNum = 0;
 	int parkingState = 0;
+	char* spaceNum = 0;
 public:
 	carInfo() {}
 	carInfo(const char* num, const char* phone, int state) : parkingState(state) {
@@ -45,38 +46,40 @@ public:
 		strcpy(phoneNum, phone);
 	}
 
-	void parkingCheck() {
+	int parkingCheck() {
 		cout << "                                   " << carNum;
 		if (parkingState == 0) {
 			//cout << "----------------------------------- 0000"  << carNum;
 			cout << endl << endl;
 			cout << "                             차량이 입차합니다.                            ";
 			parkingState = 1;
-			return;
+			return 1;
 		}
 		else if (parkingState == 1) {
 			cout << endl << endl;
 			cout << "                             차량이 출차합니다.                            ";
 			parkingState = 0;
-			return;
+			return 2;
 		}
+		return 0;
 	}
 	void showCarNum() {
 		//cout << "-----------------------------차량 번호 : 0000 -----------------------------" << carNum;
 		cout << "                             차량 번호 : " << carNum;
 	}
-	void getState() {
+	int getState() {
 		if (parkingState == 1) {
 			cout << endl << endl;
 			cout << "                               " << carNum << " 입차 상태                              " << endl;
-			return;
+			return 1;
 		}
 		else if (parkingState == 0) {
 			cout << endl << endl;
 			cout << "                               " << carNum << " 출차 상태                              " << endl;
 			parkingState = 0;
-			return;
+			return 0;
 		}
+		return 0;
 	}
 	char* getNum() { return carNum; }
 	void setNum(char* num) {
@@ -93,6 +96,11 @@ public:
 		//parkingState = state;
 		//cout << endl << "class : " << parkingState;
 	}
+	void setSpace(char* space) {
+		spaceNum = new char[strlen(space) + 1];
+		strcpy(spaceNum, space);
+	}
+	char* getSpace() { return spaceNum; }
 };
 
 class Resident : public carInfo {
@@ -164,11 +172,15 @@ Resident getCarInfo(const char*, Resident&);
 int visitingCarRegister(const char* , const char*, int);
 int VisitingList();
 int addParkingLot();
+int parkingAvailableNum();
+void DrewParkingLot();
+int parkingLotState(int num, char* space_num, char* car_num);
 
 //residentPM
 void residentInit(const char* id);
 Resident ParkingScreen(Resident&);
 Resident MgtScreen(Resident& resi);
+Resident gotoParkingLot(Resident&, int availableNum);
 
 //visitingCar
 void visitingInit();
