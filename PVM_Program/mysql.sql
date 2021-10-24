@@ -13,7 +13,8 @@ create table resident(
 	phone_num VARCHAR(14) NOT NULL,
 	building SMALLINT(4) NOT NULL,
 	unit SMALLINT(4) NOT NULL,
-	parking_space_num VARCHAR(10)
+	parking_space_num VARCHAR(10),
+	parking_state BOOLEAN
 );
 
 create table visiting(

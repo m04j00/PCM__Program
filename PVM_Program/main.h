@@ -40,11 +40,13 @@ protected:
 	char* spaceNum = 0;
 public:
 	carInfo() {}
-	carInfo(const char* num, const char* phone, int state) : parkingState(state) {
+	carInfo(const char* num, const char* phone, int state, char* space) : parkingState(state) {
 		carNum = new char[strlen(num) + 1];
 		strcpy(carNum, num);
 		phoneNum = new char[strlen(phone) + 1];
 		strcpy(phoneNum, phone);
+		spaceNum = new char[strlen(space) + 1];
+		strcpy(spaceNum, space);
 	}
 
 	int parkingCheck() {
@@ -60,9 +62,9 @@ public:
 			cout << endl << endl;
 			cout << "                             차량이 출차합니다.                            ";
 			parkingState = 0;
-			return 2;
+			return 0;
 		}
-		return 0;
+		return -1;
 	}
 	void showCarNum() {
 		//cout << "-----------------------------차량 번호 : 0000 -----------------------------" << carNum;
@@ -83,25 +85,22 @@ public:
 		return 0;
 	}
 	char* getNum() { return carNum; }
+	char* getSpace() { return spaceNum; }
 	void setNum(char* num) {
 		carNum = new char[strlen(num) + 1];
 		strcpy(carNum, num);
 	};
+	void setSpace(char* space) {
+		spaceNum = new char[strlen(space) + 1];
+		strcpy(spaceNum, space);
+	}
 	void setphoneNum(char* phone) {
 		phoneNum = new char[strlen(phone) + 1];
 		strcpy(phoneNum, phone);
 	};
 	void setState(int state) {
 		parkingState = state;
-		//cout << endl << "class : " << parkingState;
-		//parkingState = state;
-		//cout << endl << "class : " << parkingState;
 	}
-	void setSpace(char* space) {
-		spaceNum = new char[strlen(space) + 1];
-		strcpy(spaceNum, space);
-	}
-	char* getSpace() { return spaceNum; }
 };
 
 class Resident : public carInfo {
@@ -110,10 +109,11 @@ class Resident : public carInfo {
 	char* unit = 0;
 public:
 	Resident() {}
-	void setInfo(char* num, char* phoneNum, int state, const char* _building, const char* _unit)
+	void setInfo(char* num, char* phoneNum, int state, const char* _building, const char* _unit, char* space)
 	{
-		carInfo(num, phoneNum, state);
+		carInfo(num, phoneNum, state, space);
 		setNum(num);
+		setSpace(space);
 		setphoneNum(phoneNum);
 		setState(state);
 		building = new char[strlen(_building) + 1];
@@ -125,12 +125,13 @@ public:
 };
 class VisitingCar : public carInfo {
 	int period;
-	char *now;
+	char* now;
 public:
-	VisitingCar(const char* num, const char* phoneNum, int state, int period, char* _now) : carInfo(num, phoneNum, state), period(period) {
+	VisitingCar(const char* num, const char* phoneNum, int state, int period, char* _now, char* space)
+		: carInfo(num, phoneNum, state, space), period(period) {
 		now = new char[strlen(_now) + 1];
 		strcpy(now, _now);
-		cout << "                       방문 차량이 등록 되었습니다.                        " ;
+		cout << "                       방문 차량이 등록 되었습니다.                        ";
 	}
 	void showCarInfo() {
 		cout << "                  차량 번호 : " << carNum << endl;
@@ -170,13 +171,16 @@ int JoinCarInfo(const char* id, const char* num, const char* pNum, int building,
 int DeleteCarInfo(const char*);
 int ResidentList();
 Resident getCarInfo(const char*, Resident&);
-int visitingCarRegister(const char* , const char*, int);
+int visitingCarRegister(const char*, const char*, int);
 int VisitingList();
 int addParkingLot();
 int parkingAvailableNum();
 void DrewParkingLot(char* car_num);
-int parkingLotState(int num, char* space_num, char* car_num);
+int parkingLotState(int num, char* space_num, const char* car_num);
 int delParkingLot(int num);
+void ResidentState(int what_s, const char* car_num, const char* space_num);
+void drewParkingLotToCarNum();
+
 //residentPM
 void residentInit(const char* id);
 Resident ParkingScreen(Resident&);
@@ -186,4 +190,7 @@ Resident gotoParkingLot(Resident&, int availableNum);
 //visitingCar
 void visitingInit();
 VisitingCar visitingScreen(VisitingCar&);
+
+//admin
+void parkingLotScreen();
 #endif

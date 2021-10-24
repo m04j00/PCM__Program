@@ -5,6 +5,8 @@ int afterLoginMain(const char* id) {
 	Resident resi;
 	residentInit(id);
 	getCarInfo(id, resi);
+	cout << resi.getNum() << endl;
+	cout << resi.getSpace() << endl;
 	while (1) {
 		gotoxy(21, 4);
 		cout << "아파트 주차 및 차량 관리 시스템";
@@ -28,7 +30,7 @@ Resident ParkingScreen(Resident &resi) {
 	cout << endl << endl << endl << endl;
 	cout << "                          아파트 주차 관리 시스템                          " << endl << endl << endl;
 
-	int num = resi.parkingCheck(); // 입차 1, 출차 2
+	int num = resi.parkingCheck(); // 입차 1, 출차 0
 	while (1) {
 		if (num == 1) {
 			int parkingAvailNum = parkingAvailableNum();
@@ -58,11 +60,11 @@ Resident ParkingScreen(Resident &resi) {
 			gotoParkingLot(resi, parkingAvailNum);
 			break;
 		}
-		else if (num == 2) {
-			int whatNum = parkingLotState(0, resi.getSpace(), NULL);
-			cout << whatNum << endl;
+		else if (num == 0) {
+			parkingLotState(0, resi.getSpace(), "NULL");
+			ResidentState(0, "NULL", resi.getNum());
 			int parkingAvailNum = parkingAvailableNum();
-			cout << endl << endl << "                     주차 가능 구역 현황 " << parkingAvailNum << " / 100" << endl;
+			cout << endl << endl << "                         주차가능한 구역 " << parkingAvailNum << " / 100" << endl;
 			Sleep(1500);
 			break;
 		}
@@ -78,7 +80,7 @@ Resident gotoParkingLot(Resident& resi, int availableNum) {
 	char* parkingSpace = (char*)malloc(sizeof(char) * 10);
 	cout << endl << endl << endl << endl;
 	cout << "                                   주차장                                  " <<  endl << endl;
-	cout << "                     주차 가능 구역 현황 " << availableNum << " / 100" << endl << endl;
+	cout << "                         주차 가능 구역 현황 " << availableNum << " / 100" << endl << endl;
 	DrewParkingLot(NULL);
 	while (true) {
 		gotoxy(0, 40);
@@ -86,7 +88,7 @@ Resident gotoParkingLot(Resident& resi, int availableNum) {
 		gotoxy(0, 42);
 		cout << "                                                                                ";
 		gotoxy(0, 40);
-		cout << "           주차 구역을 입력해주세요 >> ";
+		cout << "                     주차 구역을 입력해주세요 >> ";
 		cin >> parkingSpace;
 		int checkingParking = parkingLotState(1, parkingSpace, resi.getNum());
 		gotoxy(0, 42);
@@ -100,7 +102,8 @@ Resident gotoParkingLot(Resident& resi, int availableNum) {
 		}
 		else if (checkingParking == 0) {
 			resi.setSpace(parkingSpace);
-			cout << "            주차되었습니다.";
+			cout << "                              주차되었습니다.                              ";
+			ResidentState(1, resi.getSpace(), resi.getNum());
 			break;
 		}
 	}

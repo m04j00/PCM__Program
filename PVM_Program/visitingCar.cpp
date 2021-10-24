@@ -29,7 +29,7 @@ void visitingInit() {
 	cin >> period;
 
 	cout << endl << endl;
-	VisitingCar car(carNum, phoneNum, 0, period, buf);
+	VisitingCar car(carNum, phoneNum, 0, period, buf, NULL);
 	visitingCarRegister(carNum, phoneNum, period);
 	Sleep(1000);
 	visitingScreen(car);
