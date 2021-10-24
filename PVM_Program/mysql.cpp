@@ -36,14 +36,29 @@ int SearchUserId(const char* id) {
 //차량번호 유무
 int SearchCarNum(const char* num) {
 	char query[100];
+	//resident 테이블에서 검색
 	sprintf(query, "select * from resident where car_num = '%s'", num);
 	mysql_query(mysql, query);
 	res = mysql_store_result(mysql);
-	fields = mysql_num_fields(res);
-
 	row = mysql_fetch_row(res);
-	if (row == nullptr) return 0;
 
+	//존재할 경우 -1 반환
+	if (row != nullptr) return -1;
+	mysql_free_result(res);
+
+	//visiting 테이블에서 검색
+	sprintf(query, "select * from visiting where car_num = '%s'", num);
+	mysql_query(mysql, query);
+	res = mysql_store_result(mysql);
+	row = mysql_fetch_row(res);
+
+	//존재하지 않을 경우 0 반환
+	if (row == nullptr) {
+		mysql_free_result(res);
+		return 0;
+	}
+
+	mysql_free_result(res);
 	return -1;
 }
 //login용
@@ -192,7 +207,7 @@ int ResidentList() {
 // 방문차량 기록
 int visitingCarRegister(const char* num, const char* pNum, int exit) {
 	char query[100];
-	sprintf(query, "INSERT INTO visiting VALUES('%s', '%s', NOW(), '%d')", num, pNum, exit);
+	sprintf(query, "INSERT INTO visiting VALUES('%s', '%s', NOW(), '%d', NULL, 0)", num, pNum, exit);
 	int state = mysql_query(mysql, query);
 	if (state != 0) {
 		printf("error : %s", mysql_error(mysql));
@@ -380,10 +395,17 @@ int delParkingLot(int num) {
 	if (state != 0) { return -1; }
 	return 0;
 }
-//주차 상태 및 주차 구역 변경
+//resident - 주차 상태 및 주차 구역 변경
 void ResidentState(int what_s, const char* space_num, const char* car_num) {
 	char query[100];
 	sprintf(query, "UPDATE resident SET parking_state = %d, parking_space_num = '%s' WHERE car_num = '%s'", what_s, space_num, car_num);
+	int state = mysql_query(mysql, query);
+	if (state != 0) cout << mysql_error(mysql);
+}
+//visiting - 주차 상태 및 주차 구역 변경
+void VisitingState(int what_s, const char* space_num, const char* car_num) {
+	char query[100];
+	sprintf(query, "UPDATE visiting SET parking_state = %d, parking_space_num = '%s' WHERE car_num = '%s'", what_s, space_num, car_num);
 	int state = mysql_query(mysql, query);
 	if (state != 0) cout << mysql_error(mysql);
 }

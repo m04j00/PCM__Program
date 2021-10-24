@@ -23,7 +23,9 @@ create table visiting(
 	car_num VARCHAR(10) PRIMARY KEY,
 	phone_num VARCHAR(14) NOT NULL,
 	date DATE,
-	exit_date SMALLINT(2)
+	exit_date SMALLINT(2),
+	parking_space_num VARCHAR(10),
+	parking_state BOOLEAN
 );
 
 create table parking_lot(
