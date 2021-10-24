@@ -27,13 +27,33 @@ Resident ParkingScreen(Resident &resi) {
 	system("cls");
 	cout << endl << endl << endl << endl;
 	cout << "                          아파트 주차 관리 시스템                          " << endl << endl << endl;
-	
 
 	int num = resi.parkingCheck(); // 입차 1, 출차 2
 	while (1) {
 		if (num == 1) {
 			int parkingAvailNum = parkingAvailableNum();
-			cout << endl << endl << "                          주차 가능 개수 " << parkingAvailNum << " / 100" << endl;
+			cout << endl << endl << "                         주차가능한 구역 " << parkingAvailNum << " / 100" << endl << endl << endl;
+			if (parkingAvailNum == 0) {
+				printf("%s   주차가능한 구역이 없습니다. 방문 차량을 대상으로 출차를 요청합니다...   \n\n", RED);
+				Sleep(1500);
+				delParkingLot(1);
+				parkingAvailNum = parkingAvailableNum();
+				if (parkingAvailNum == 0) {
+					printf("     주차가능한 구역을 찾지 못했습니다. 관리자에게 직접 문의해주세요.      %s\n", DEF);
+					resi.setState(0);
+					cout << endl << endl << "                         주차가능한 구역 " << parkingAvailNum << " / 100" << endl;
+					Sleep(1500);
+					break;
+				}
+				printf("                       주차가능한 구역을 찾았습니다!                      %s\n", DEF);
+				cout << endl << endl << "                         주차가능한 구역 " << parkingAvailNum << " / 100" << endl;
+				while (1) {
+					if (keyControl() == SUBMIT) {
+						break;
+					}
+					system("cls");
+				}
+			}
 			Sleep(1000);
 			gotoParkingLot(resi, parkingAvailNum);
 			break;
@@ -59,7 +79,7 @@ Resident gotoParkingLot(Resident& resi, int availableNum) {
 	cout << endl << endl << endl << endl;
 	cout << "                                   주차장                                  " <<  endl << endl;
 	cout << "                     주차 가능 구역 현황 " << availableNum << " / 100" << endl << endl;
-	DrewParkingLot();
+	DrewParkingLot(NULL);
 	while (true) {
 		gotoxy(0, 40);
 		cout << "                                                                                ";
@@ -101,6 +121,7 @@ Resident MgtScreen(Resident& resi) {
 	if (state == 1) {
 		cout << "                              주차 위치 : " << resi.getSpace() << endl;
 	}
+	DrewParkingLot(resi.getNum());
 	while (1) {
 		if (keyControl() == SUBMIT) {
 			break;

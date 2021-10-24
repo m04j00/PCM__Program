@@ -20,6 +20,7 @@ using namespace std;
 #define RED  "\033[31m"
 #define BLUE "\033[34m"
 #define GREEN "\033[32m"
+#define WHITE "\033[37m"
 
 class User {
 protected:
@@ -173,9 +174,9 @@ int visitingCarRegister(const char* , const char*, int);
 int VisitingList();
 int addParkingLot();
 int parkingAvailableNum();
-void DrewParkingLot();
+void DrewParkingLot(char* car_num);
 int parkingLotState(int num, char* space_num, char* car_num);
-
+int delParkingLot(int num);
 //residentPM
 void residentInit(const char* id);
 Resident ParkingScreen(Resident&);

@@ -203,12 +203,12 @@ int VisitingList() {
 		int eixteNum = atoi(row[3]); // 일 수 
 		string exit_day = to_string((eixtDay + eixteNum)); // 입차 일 + 출차 일 수
 		string _finalExit;
-		if(eixtDay + eixteNum >= 10)
+		if (eixtDay + eixteNum >= 10)
 			_finalExit = str.substr(0, 8) + exit_day;
 		else _finalExit = str.substr(0, 8) + '0' + exit_day;
 		char* finalExit = new char[_finalExit.length() + 1];
 		strcpy(finalExit, _finalExit.c_str());
-		char* equalExit = new char[_finalExit.length() + 1]; 
+		char* equalExit = new char[_finalExit.length() + 1];
 		strcpy(equalExit, finalExit);
 
 		//출차 날짜를 어긴 차량 구하기
@@ -264,7 +264,7 @@ int addParkingLot() {
 			if (k < 10) sprintf(num, "%c%d%d%d", j, 0, 0, k);
 			else sprintf(num, "%c%d%d", j, 0, k);
 			cout << num << endl;
-			sprintf(query, "INSERT INTO parking_lot(space_num, state) VALUES('%s', %d)", num, 0);
+			sprintf(query, "INSERT INTO parking_lot(space_num, car_num, state, car_info) VALUES('%s', 'not', %d, 0)", num, 0);
 			int state = mysql_query(mysql, query);
 			if (state != 0) return -1;
 		}
@@ -272,21 +272,43 @@ int addParkingLot() {
 	}
 	return 0;
 }
-void DrewParkingLot() {
+void DrewParkingLot(char* car_num) {
 	char query[100];
 	sprintf(query, "select * from parking_lot");
 	int state = mysql_query(mysql, query);
 	res = mysql_store_result(mysql);
 	fields = mysql_num_fields(res);
 	int cnt = 0;
-	while (row = mysql_fetch_row(res))
-	{
-		if (row[2] == (string)"0") printf("   [  %s%s%s  ]  ", GREEN, row[0], DEF);
-		else if (row[2] == (string)"1") printf("   [  %s%s%s  ]  ", RED, row[0], DEF);
-		cnt++;
-		if (cnt % 5  == 0) cout << endl;
-		if (cnt % 10  == 0) cout << endl;
+	
+	if (car_num != NULL) {
+		//if (row[1] == car_num) cout << "true" << endl;
+		int num = -1;
+
+		//while (row = mysql_fetch_row(res))
+		//{
+		//	if (strcmp(row[1], car_num) == 0) num = 0;
+		//	else num = -1;
+		//	if(num == 0) printf("   [  %s%s%s  ]  ", WHITE , row[0], DEF);
+		//	else if (row[2] == (string)"0") printf("   [  %s%s%s  ]  ", GREEN, row[0], DEF);
+		//	else if (row[2] == (string)"1") printf("   [  %s%s%s  ]  ", RED, row[0], DEF);
+		//	cnt++;
+		//	if (cnt % 5 == 0) cout << endl;
+		//	if (cnt % 10 == 0) cout << endl;
+		//}
 	}
+	else {
+		while (row = mysql_fetch_row(res))
+		{
+			if (row[3] == (string)"1") printf("   [  %s%s%s  ]  ", BLUE, row[0], DEF);
+			else if (row[2] == (string)"0") printf("   [  %s%s%s  ]  ", GREEN, row[0], DEF);
+			else if (row[2] == (string)"1") printf("   [  %s%s%s  ]  ", RED, row[0], DEF);
+			cnt++;
+			if (cnt % 5 == 0) cout << endl;
+			if (cnt % 10 == 0) cout << endl;
+		}
+	}
+
+
 }
 //주차 가능 구역 개수
 int parkingAvailableNum() {
@@ -314,10 +336,9 @@ int parkingLotState(int num, char* space_num, char* car_num) {
 		row = mysql_fetch_row(res);
 		if (row == nullptr) return -1; // row가 nullptr이면 존재하지 않는 주차구역
 	}
-	
 	mysql_free_result(res);
 	char query[100];
-	sprintf(query, "UPDATE parking_lot SET car_num = '%s', state = %d WHERE space_num = '%s'", car_num, num, space_num); 
+	sprintf(query, "UPDATE parking_lot SET car_num = '%s', state = %d WHERE space_num = '%s' AND state = %d", car_num, num, space_num, !num);
 
 	int state = mysql_query(mysql, query);
 	res = mysql_store_result(mysql);
@@ -325,6 +346,20 @@ int parkingLotState(int num, char* space_num, char* car_num) {
 	if (rows == 0) { // rows가 0일 경우 이미 주차된 구역
 		return 1;
 	}
+	return 0;
+}
+//주차장 주차구역 비우기
+int delParkingLot(int num) {
+	//case 1 : 방문차량 주차구역 비우기
+	char query[100];
+	switch (num) {
+	case 1: sprintf(query, "UPDATE parking_lot SET car_num = NULL, state = 0, car_info = 0 where car_info = %d", num); break;
+	case 2: sprintf(query, "delete from parking_lot where car_info = %d", 1); break;
+	}
+
+	int state = mysql_query(mysql, query);
+
+	if (state != 0) { return -1; }
 	return 0;
 }
 int mysqlClose() {
