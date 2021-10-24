@@ -28,17 +28,23 @@ int SearchUserId(const char* id) {
 	res = mysql_store_result(mysql);
 	fields = mysql_num_fields(res);
 
-	int cnt = 0;
-	while (row = mysql_fetch_row(res))
-	{
-		cnt++;
-		for (i = 0; i < fields; i++) {
-			printf("%s  ", row[i]);
-		}
-		cout << endl;
-	}
-	cout << cnt;
-	return 0;
+	row = mysql_fetch_row(res);
+	if (row == nullptr) return 0;
+
+	return -1;
+}
+//차량번호 유무
+int SearchCarNum(const char* num) {
+	char query[100];
+	sprintf(query, "select * from resident where car_num = '%s'", num);
+	mysql_query(mysql, query);
+	res = mysql_store_result(mysql);
+	fields = mysql_num_fields(res);
+
+	row = mysql_fetch_row(res);
+	if (row == nullptr) return 0;
+
+	return -1;
 }
 //login용
 int FindUser(const char* id, const char* pw) {
@@ -79,9 +85,11 @@ int JoinUser(const char* id, const char* pw) {
 //차량 등록
 int JoinCarInfo(const char* id, const char* num, const char* pNum, int building, int unit) {
 	char query[100];
-	sprintf(query, "INSERT INTO resident VALUES('%s', '%s', '%s', %d, %d)", id, num, pNum, building, unit);
+	sprintf(query, "INSERT INTO resident VALUES('%s', '%s', '%s', %d, %d, NULL, 0)", id, num, pNum, building, unit);
+	cout << query << endl;
 	int state = mysql_query(mysql, query);
 	if (state != 0) {
+		printf("error : %s", mysql_error(mysql));
 		return 1;
 	}
 	return 0;
@@ -142,16 +150,22 @@ int FindCarInfo(const char* id) {
 	return -1;
 }
 // 차량 정보 삭제
-int DeleteCarInfo(const char* num) {
+int DeleteCarInfo(const char* num, const char* id) {
 	char query[100];
-	sprintf(query, "delete from resident where car_num = '%s'", num);
-
+	sprintf(query, "DELETE FROM resident WHERE id = '%s' AND car_num = '%s';", id, num);
 	int state = mysql_query(mysql, query);
 
 	if (state != 0) {
 		printf("error : %s", mysql_error(mysql));
 		return 1;
 	}
+	my_ulonglong rows = mysql_affected_rows(mysql); // update 적용된 레코드의 수 반환
+	if (rows == 0) { // rows가 0일 경우 이미 주차된 구역
+		return -1;
+	}
+	char query2[100];
+	sprintf(query2, "delete from user where id = '%s'", id);
+	int state2 = mysql_query(mysql, query2);
 	return 0;
 }
 int ResidentList() {

@@ -162,6 +162,13 @@ int carRegistration() {
 	cout << "                                 차량 등록                                 " << endl << endl << endl;
 	cout << "               차량 번호 : ";
 	cin >> carNum;
+	int isCar = SearchCarNum(carNum);
+	if (isCar == -1) {
+		printf("\n%s                        이미 등록된 차량번호입니다.                         %s\n", RED, DEF);
+		printf("                        이전 화면으로 돌아갑니다...                        ");
+		Sleep(1500);
+		return 0;
+	}
 	cout << "               전화 번호 : ";
 	cin >> phoneNum;
 	cout << "               동 수 : ";
@@ -174,14 +181,21 @@ int carRegistration() {
 	cin >> password;
 	cout << endl << endl;
 
-	int joinInfo = JoinCarInfo(id, carNum, phoneNum, nBuilding, nUnit);
-	int Join = JoinUser(id, password);
-	if(joinInfo == 0 && Join == 0)
-		cout << "                        차량 등록이 완료되었습니다.                        ";
+	int isUser = SearchUserId(id);
+	if (isUser == 0) {
+		JoinUser(id, password);
+		JoinCarInfo(id, carNum, phoneNum, nBuilding, nUnit);
+		printf("%s                                등록되었습니다.                                %s", GREEN, DEF);
+	}
+	else printf("%s                          이미 등록된 아이디입니다.                           %s", RED, DEF);
 		
-	else 
-		cout << "                 이미 등록된 아이디이거나 차량번호입니다.                  ";
 	Sleep(1000);
+	while (1) {
+		if (keyControl() == SUBMIT) {
+			system("cls");
+			return 0;
+		}
+	}
 	system("cls");
 	return 0;
 
@@ -199,11 +213,12 @@ int carDelReg() {
 	cout << "                               차량 등록 해지                              " << endl << endl;
 	cout << "                    차량 번호 : ";
 	cin >> carNum;
-	cout << endl;
+	cout << endl << endl;
 	int carInfo = FindCarInfo(carNum);
 	if (carInfo) {
-		cout << "                      등록되지 않은 차량번호 입니다.                       " << endl;
-		Sleep(1000);
+		printf("%s                      등록되지 않은 차량번호 입니다.                       %s\n\n", RED, DEF);
+		printf("                        이전 화면으로 돌아갑니다...                        ");
+		Sleep(1500);
 		return 0;
 	}
 	cout << endl << "---------------------------------------------------------------------------" << endl << endl;
@@ -214,12 +229,31 @@ int carDelReg() {
 	cin >> YorN;
 	cout << endl;
 	if (YorN == 'Y' || YorN == 'y') {
-		DeleteCarInfo(carNum);
-		cout << "                        정상적으로 해지되었습니다.                         " << endl;
+		char* inputId = (char*)malloc(sizeof(char) * 20);
+		cout << "                     함께 등록한 아이디를 입력해주세요                     " << endl;
+		cout << "                     >> ";
+		cin >> inputId;
+		cout << endl << endl;
+		int success = DeleteCarInfo(carNum, inputId);
+		if (success == 0)
+			printf("%s                        정상적으로 해지되었습니다.                         %s", GREEN, DEF);
+		else {
+			printf("%s           입력한 아이디와 일치하지 않아 해지가 취소 되었습니다.           %s\n\n", RED, DEF);
+			printf("                        이전 화면으로 돌아갑니다...                        ");
+			Sleep(1500);
+			return 0;
+		}
 	}
+	//"                     함께 등록한 아이디를 입력해주세요                     "
 	else	
-		cout << "                              취소되었습니다.                              " << endl;
+		printf("%s                              취소되었습니다.                              %s\n\n", RED, DEF);
 	Sleep(1000);
+	while (1) {
+		if (keyControl() == SUBMIT) {
+			system("cls");
+			return 0 ;
+		}
+	}
 	system("cls");
 	return 0;
 }

@@ -14,7 +14,9 @@ create table resident(
 	building SMALLINT(4) NOT NULL,
 	unit SMALLINT(4) NOT NULL,
 	parking_space_num VARCHAR(10),
-	parking_state BOOLEAN
+	parking_state BOOLEAN,
+	FOREIGN KEY (id)
+    REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 create table visiting(
