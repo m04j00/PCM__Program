@@ -96,6 +96,8 @@ Resident getCarInfo(const char* id, Resident& resi) {
 	char* _id;
 	char* _building;
 	char* _unit;
+	char* car_state;
+	char* space;
 	char query[100];
 	sprintf(query, "select * from resident where id = '%s'", id);
 	int state = mysql_query(mysql, query);
@@ -109,8 +111,10 @@ Resident getCarInfo(const char* id, Resident& resi) {
 	phoneNum = row[2];
 	_building = row[3];
 	_unit = row[4];
+	space = row[5];
+	car_state = row[6];
 	//Resident resi(num, phoneNum, 0, id, _building, _unit);
-	resi.setInfo(num, phoneNum, 0, _building, _unit);
+	resi.setInfo(num, phoneNum, atoi(car_state), _building, _unit, space);
 
 	return resi;
 }
@@ -159,12 +163,12 @@ int ResidentList() {
 
 	if (state != 0) return -1;
 	int cnt = 0;
-	printf("            차량번호      전화번호      동 수   호 수 \n");
+	cout << "      차량  번호        전화 번호       동 수     호 수     주차  상태      " << endl;
 	while (row = mysql_fetch_row(res))
 	{
 		cnt++;
-
-		printf("           %7s  %14s  %7s  %6s", row[1], row[2], row[3], row[4]);
+		if (row[6] == (string)"0") printf("        %5s%22s%9s%10s%13s", row[1], row[2], row[3], row[4], "출차");
+		else printf("%s        %5s%22s%9s%10s%13s%s", BLUE, row[1], row[2], row[3], row[4], "입차", DEF);
 
 		cout << endl;
 	}
@@ -279,7 +283,7 @@ void DrewParkingLot(char* car_num) {
 	res = mysql_store_result(mysql);
 	fields = mysql_num_fields(res);
 	int cnt = 0;
-	
+
 	if (car_num != NULL) {
 		//if (row[1] == car_num) cout << "true" << endl;
 		int num = -1;
@@ -323,7 +327,7 @@ int parkingAvailableNum() {
 		return atoi(row[0]);
 	}
 }
-int parkingLotState(int num, char* space_num, char* car_num) {
+int parkingLotState(int num, char* space_num, const char* car_num) {
 	// -1 : 잘못 입력
 	// 0 : 주차 성공
 	// 1 : 이미 주차된 구역
@@ -361,6 +365,75 @@ int delParkingLot(int num) {
 
 	if (state != 0) { return -1; }
 	return 0;
+}
+//주차 상태 및 주차 구역 변경
+void ResidentState(int what_s, const char* space_num, const char* car_num) {
+	char query[100];
+	sprintf(query, "UPDATE resident SET parking_state = %d, parking_space_num = '%s' WHERE car_num = '%s'", what_s, space_num, car_num);
+	int state = mysql_query(mysql, query);
+	if (state != 0) cout << mysql_error(mysql);
+}
+//┌────────┐
+//│  A001  │
+//│  0000  │
+//└────────┘
+void drewParkingLotToCarNum() {
+	char* ptr_space[100]; // 주차 구역 이름 담긴 배열
+	char* ptr_car[100]; // 주차된 차량 번호 담긴 배열
+	int arr_state[100] = { 0, }; // 주차 상태라면 1 아니면 0
+	int arr_info[100] = { 0, }; // 방문 차량이라면 1 입주민면 0
+	char query[100];
+
+	sprintf(query, "select * from parking_lot");
+	int state = mysql_query(mysql, query);
+	res = mysql_store_result(mysql);
+	fields = mysql_num_fields(res);
+	int cnt = 0;
+	i = 0;
+	while (row = mysql_fetch_row(res)) {
+		ptr_space[i] = row[0];
+		if (row[1] == NULL || row[1] == (string)"NULL") {
+			ptr_car[i] = new char(5);
+			strcpy(ptr_car[i], "    ");
+		}
+		else ptr_car[i] = row[1];
+		if (row[2] == (string)"1") arr_state[i] = 1;
+		if (row[3] == (string)"1") arr_info[i] = 1;
+		//cout << ptr_space[i] << "   " << ptr_car[i] << "   " << arr_state[i] << "   " << arr_info[i] << endl;
+		i++;
+	}
+	int k = 0; // 주차 구역
+	int j = 0; // 차량 번호 
+	int what_s = 0; // state
+	int what_i = 0; // info
+	for (i = 0; i < 20; i++) {
+		cout << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << endl;
+		for (int z = 0; z < 5; z++) {
+			if (arr_info[k] == 1) {
+				printf(" │   %s%s%s   │  ", BLUE, ptr_space[k++], DEF);
+				what_i = 1;
+			}
+			else if (arr_state[k] == 1) {
+				printf(" │   %s%s%s   │  ", RED, ptr_space[k++], DEF);
+				what_s = 1;
+			}
+			else printf(" │   %s%s%s   │  ", GREEN, ptr_space[k++], DEF);
+		}
+		cout << endl;
+		for (int z = 0; z < 5; z++) {
+			if (what_i == 1) {
+				printf(" │   %s%s%s   │  ", BLUE, ptr_car[j++], DEF);
+				what_i = 1;
+			}
+			else if (what_s == 1) {
+				printf(" │   %s%s%s   │  ", RED, ptr_car[j++], DEF);
+				what_s = 1;
+			}
+			else printf(" │   %s%s%s   │  ", GREEN, ptr_car[j++], DEF);
+		}
+		cout << endl;
+		cout << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << endl;
+	}
 }
 int mysqlClose() {
 	mysql_close(mysql);

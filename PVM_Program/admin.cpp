@@ -20,6 +20,10 @@ int adminScreen() {
 			VisitingMgtScreen();
 		}
 		else if (menuCode == 2) {
+			system("cls");
+			parkingLotScreen();
+		}
+		else if (menuCode == 3) {
 			return 0;
 		}
 		system("cls");
@@ -35,6 +39,8 @@ int adminMenu() {
 	gotoxy(x, y + 1);
 	cout << "방문  차량  관리";
 	gotoxy(x, y + 2);
+	cout << "주 차 장   관 리";
+	gotoxy(x, y + 3);
 	cout << "뒤  로    가  기";
 
 	while (1) {
@@ -50,7 +56,7 @@ int adminMenu() {
 			break;
 		}
 		case DOWN: {
-			if (y < 9) {
+			if (y < 10) {
 				gotoxy(x - 2, y);
 				cout << " ";
 				gotoxy(x - 2, ++y);
@@ -230,3 +236,21 @@ void ShowResidentList() {
 		}
 	}
 }
+
+void parkingLotScreen() {
+	cout << endl << endl << endl << endl;
+	cout << "                                  주 차 장                                  " << endl << endl << endl;
+	int parkingPossible = parkingAvailableNum();
+	cout << "                        주차 구역 현황  |  " << parkingPossible << " / 100" << endl << endl;
+	printf(" * %s초록색%s : 빈 구역, %s붉은색%s : 입주민 주차 상태, %s청색%s : 방문 차량 주차 상태 \n", GREEN, DEF, RED, DEF, BLUE, DEF);
+	cout << "                          * 뒤로가기 : 스페이스바                          " << endl;
+	cout << endl << endl;
+	drewParkingLotToCarNum();
+
+	while (1) {
+		if (keyControl() == SUBMIT) {
+			system("cls");
+			return;
+		}
+	}
+} 
