@@ -29,8 +29,11 @@ int SearchUserId(const char* id) {
 	fields = mysql_num_fields(res);
 
 	row = mysql_fetch_row(res);
-	if (row == nullptr) return 0;
-
+	if (row == nullptr) {
+		mysql_free_result(res);
+		return 0;
+	}
+	mysql_free_result(res);
 	return -1;
 }
 //차량번호 유무
@@ -43,7 +46,10 @@ int SearchCarNum(const char* num) {
 	row = mysql_fetch_row(res);
 
 	//존재할 경우 -1 반환
-	if (row != nullptr) return -1;
+	if (row != nullptr) {
+		mysql_free_result(res);
+		return -1;
+	}
 	mysql_free_result(res);
 
 	//visiting 테이블에서 검색
@@ -79,11 +85,17 @@ int FindUser(const char* id, const char* pw) {
 		cnt++;
 		//row[1] : 비번 in 레코드
 		if (!strcmp(row[1], pw)) {
-			if (!strcmp(row[2], "1")) return 2;
+			if (!strcmp(row[2], "1")) {
+				mysql_free_result(res);
+				return 2;
+			}
+			mysql_free_result(res);
 			return 1;
 		}
-		else return -1;
-
+		else {
+			mysql_free_result(res);
+			return -1;
+		}
 	}
 	return 0;
 }
@@ -93,8 +105,10 @@ int JoinUser(const char* id, const char* pw) {
 	sprintf(query, "INSERT INTO user VALUES('%s', '%s', 0)", id, pw);
 	int state = mysql_query(mysql, query);
 	if (state != 0) {
+		mysql_free_result(res);
 		return 1;
 	}
+	mysql_free_result(res);
 	return 0;
 }
 //차량 등록
@@ -113,10 +127,9 @@ int JoinCarInfo(const char* id, const char* num, const char* pNum, int building,
 Resident getCarInfo(const char* id, Resident& resi) {
 	// 0 : 계정 있음
 	// -1 : 계정 없음
-
+	cout << "get car info 옴" << endl;
 	char* num;
 	char* phoneNum;
-	char* _id;
 	char* _building;
 	char* _unit;
 	char* car_state;
@@ -124,17 +137,26 @@ Resident getCarInfo(const char* id, Resident& resi) {
 	char query[100];
 	sprintf(query, "select * from resident where id = '%s'", id);
 	int state = mysql_query(mysql, query);
+	if (state != 0) {
+		printf("error : %s", mysql_error(mysql));
+		return resi;
+	}
 	res = mysql_store_result(mysql);
 	fields = mysql_num_fields(res);
 	row = mysql_fetch_row(res);
 
 	//Resident(const char* num, const char* phoneNum, int state, const char* _id, const char* _building, const char* _unit)
-
+	cout << row << endl;
+	if (row[5] == NULL || row[5] == (string)"NULL") {
+		space = new char(5);
+		strcpy(space, "NULL");
+	} 
+	else space = row[5]; 
 	num = row[1];
 	phoneNum = row[2];
 	_building = row[3];
 	_unit = row[4];
-	space = row[5];
+ 	
 	car_state = row[6];
 	//Resident resi(num, phoneNum, 0, id, _building, _unit);
 	resi.setInfo(num, phoneNum, atoi(car_state), _building, _unit, space);
@@ -263,7 +285,7 @@ int VisitingList() {
 		}
 		// 날짜월날짜를 숫자로 만들어 예상 출차 날짜가 더 클 경우 조치할 수 있도록 함. 
 		// 오늘날짜 == 예상 출차 날짜 같을 경우 나가는 날임을 알림
-		// 오늘날짜 > 예상 출차 날짜일 경우 출차 조취 시킴
+		// 오늘날짜 > 예상 출차 날짜일 경우 출차 조치 시킴
 		if (today == ahk) {
 			printf("%s       %7s    %14s  %13s %13s", RED, row[0], row[1], row[2], finalExit);
 			printf("%s", DEF);
@@ -276,8 +298,9 @@ int VisitingList() {
 				printf("error : %s", mysql_error(mysql));
 			}
 			else {
+				parkingLotState(1, row[4], row[0], 0);
 				printf("       %7s    %14s  %13s %13s\n", row[0], row[1], row[2], finalExit);
-				printf("%s                           방문 차량 %s 출차 조취", BLUE, row[0]);
+				printf("%s                           방문 차량 %s 출차 조치", BLUE, row[0]);
 				printf("%s", DEF);
 			}
 		}
@@ -356,31 +379,42 @@ int parkingAvailableNum() {
 		return atoi(row[0]);
 	}
 }
-int parkingLotState(int num, char* space_num, const char* car_num) {
-	// -1 : 잘못 입력
-	// 0 : 주차 성공
-	// 1 : 이미 주차된 구역
-	if (num == 1) { // 입차 시에만 코드블록 동작
+int parkingLotState(int isState, const char* space_num, const char* car_num, int isResi) {
+	cout << "parking lot state : " << car_num << endl;
+	if (isState == 1) {
 		char query1[100];
 		sprintf(query1, "SELECT * FROM parking_lot where space_num = '%s'", space_num); // 입력된 주차구역이 존재하는 레코드인지
-
 		int state1 = mysql_query(mysql, query1);
 		res = mysql_store_result(mysql);
 		row = mysql_fetch_row(res);
-		if (row == nullptr) return -1; // row가 nullptr이면 존재하지 않는 주차구역
+		if (row == nullptr) {
+			cout << "free : " << res << endl;
+			return -1; // row가 nullptr이면 존재하지 않는 주차구역
+		}
+		mysql_free_result(res);
 	}
-	mysql_free_result(res);
-	char query[100];
-	sprintf(query, "UPDATE parking_lot SET car_num = '%s', state = %d WHERE space_num = '%s' AND state = %d", car_num, num, space_num, !num);
 
-	int state = mysql_query(mysql, query);
+	char query[100];
+	sprintf(query, "UPDATE parking_lot SET car_num = '%s' WHERE space_num = '%s' AND state = %d", car_num, space_num, !isState);
+	int state1 = mysql_query(mysql, query);
 	res = mysql_store_result(mysql);
 	my_ulonglong rows = mysql_affected_rows(mysql); // update 적용된 레코드의 수 반환
+	cout << rows << endl;
 	if (rows == 0) { // rows가 0일 경우 이미 주차된 구역
+		mysql_free_result(res);
 		return 1;
 	}
+	else {
+		// 위 업데이트 구문에서 파라미터 오버되어 두 번 나눠 업데이트함
+		char query2[100];
+		sprintf(query2, "UPDATE parking_lot SET state = %d, car_info = %d WHERE space_num = '%s' AND state = %d", isState, isResi, space_num, !isState);
+		int state2 = mysql_query(mysql, query2);
+	}
+	
 	return 0;
 }
+
+
 //주차장 주차구역 비우기
 int delParkingLot(int num) {
 	//case 1 : 방문차량 주차구역 비우기
@@ -447,23 +481,19 @@ void drewParkingLotToCarNum() {
 		for (int z = 0; z < 5; z++) {
 			if (arr_info[k] == 1) {
 				printf(" │   %s%s%s   │  ", BLUE, ptr_space[k++], DEF);
-				what_i = 1;
 			}
 			else if (arr_state[k] == 1) {
 				printf(" │   %s%s%s   │  ", RED, ptr_space[k++], DEF);
-				what_s = 1;
 			}
 			else printf(" │   %s%s%s   │  ", GREEN, ptr_space[k++], DEF);
 		}
 		cout << endl;
 		for (int z = 0; z < 5; z++) {
-			if (what_i == 1) {
+			if (arr_info[j] == 1) {
 				printf(" │   %s%s%s   │  ", BLUE, ptr_car[j++], DEF);
-				what_i = 1;
 			}
-			else if (what_s == 1) {
+			else if (arr_state[j] == 1) {
 				printf(" │   %s%s%s   │  ", RED, ptr_car[j++], DEF);
-				what_s = 1;
 			}
 			else printf(" │   %s%s%s   │  ", GREEN, ptr_car[j++], DEF);
 		}

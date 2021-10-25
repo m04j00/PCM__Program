@@ -61,6 +61,11 @@ void visitingInit() {
 	VisitingCar car(carNum, phoneNum, 0, period, buf, NULL);
 	visitingCarRegister(carNum, phoneNum, period);
 	Sleep(1000);
+	while (1) {
+		if (keyControl() == SUBMIT) {
+			break;
+		}
+	}
 	gotoParkingLot(car, parkingAvailNum);
 	system("cls");
 	visitingInfoScreen(car);
@@ -82,7 +87,9 @@ VisitingCar gotoParkingLot(VisitingCar& car, int availableNum) {
 		gotoxy(0, 40);
 		cout << "                     주차 구역을 입력해주세요 >> ";
 		cin >> parkingSpace;
-		int checkingParking = parkingLotState(1, parkingSpace, car.getNum());
+		char* car_num = car.getNum();
+		cout << car_num << endl;
+		int checkingParking = parkingLotState(1, parkingSpace, car_num, 1);
 		gotoxy(0, 42);
 		if (checkingParking == -1) {
 			printf("%s        주차 구역을 잘못 입력했습니다. 다시 입력해주세요.%s", RED, DEF);
@@ -129,12 +136,16 @@ int VisitingScreen(VisitingCar& car) {
 
 }
 int VisitingMenu() {
-	int x = 31;
+	int x = 27;
 	int y = 7;
 	gotoxy(x - 2, y);
-	cout << ">      차량  정보      ";
+	//cout << "                             방문 차량 메뉴 창                             ";
+	//cout << "                                 차량 정보                                 ";
+	//cout << "                                 출차 하기                                 ";
+	//cout << "                           주차된 상태에서 나가기                          ";
+	cout << ">       차량 정보       ";
 	gotoxy(x, y + 1);
-	cout << "      출차  하기      ";
+	cout << "      출차 하기       ";
 	gotoxy(x, y + 2);
 	cout << "주차된 상태에서 나가기";
 

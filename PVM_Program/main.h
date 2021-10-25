@@ -175,7 +175,7 @@ int VisitingList();
 int addParkingLot();
 int parkingAvailableNum();
 void DrewParkingLot(char* car_num);
-int parkingLotState(int num, char* space_num, const char* car_num);
+int parkingLotState(int num, const char* space_num, const char* car_num, int);
 int delParkingLot(int num);
 void ResidentState(int what_s, const char* car_num, const char* space_num);
 void VisitingState(int what_s, const char* car_num, const char* space_num);

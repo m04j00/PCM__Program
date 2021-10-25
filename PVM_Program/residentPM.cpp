@@ -61,7 +61,7 @@ Resident ParkingScreen(Resident &resi) {
 			break;
 		}
 		else if (num == 0) {
-			parkingLotState(0, resi.getSpace(), "NULL");
+			parkingLotState(0, resi.getSpace(), "NULL", 0);
 			ResidentState(0, "NULL", resi.getNum());
 			int parkingAvailNum = parkingAvailableNum();
 			cout << endl << endl << "                         주차가능한 구역 " << parkingAvailNum << " / 100" << endl;
@@ -90,7 +90,7 @@ Resident gotoParkingLot(Resident& resi, int availableNum) {
 		gotoxy(0, 40);
 		cout << "                     주차 구역을 입력해주세요 >> ";
 		cin >> parkingSpace;
-		int checkingParking = parkingLotState(1, parkingSpace, resi.getNum());
+		int checkingParking = parkingLotState(1, parkingSpace, resi.getNum(), 0);
 		gotoxy(0, 42);
 		if (checkingParking == -1) {
 			printf("%s        주차 구역을 잘못 입력했습니다. 다시 입력해주세요.%s", RED, DEF);
