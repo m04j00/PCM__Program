@@ -53,18 +53,16 @@ int SearchCarNum(const char* num) {
 	mysql_free_result(res);
 
 	//visiting 테이블에서 검색
-	sprintf(query, "select * from visiting where car_num = '%s'", num);
-	mysql_query(mysql, query);
+	char query2[100];
+	sprintf(query2, "select * from visiting where car_num = '%s'", num);
+	mysql_query(mysql, query2);
 	res = mysql_store_result(mysql);
 	row = mysql_fetch_row(res);
 
 	//존재하지 않을 경우 0 반환
 	if (row == nullptr) {
-		mysql_free_result(res);
 		return 0;
 	}
-
-	mysql_free_result(res);
 	return -1;
 }
 //login용
@@ -252,18 +250,8 @@ int VisitingList() {
 	{
 		cnt++;
 
-		// 예상 출차 날짜 구하기 
-		string str = row[2]; // 입차 날짜 2021-10-07
-		int eixtDay = stoi(str.substr(8, 2)); // 일
-		int eixteNum = atoi(row[3]); // 일 수 
-		string exit_day = to_string((eixtDay + eixteNum)); // 입차 일 + 출차 일 수
-		string _finalExit;
-		if (eixtDay + eixteNum >= 10)
-			_finalExit = str.substr(0, 8) + exit_day;
-		else _finalExit = str.substr(0, 8) + '0' + exit_day;
-		char* finalExit = new char[_finalExit.length() + 1];
-		strcpy(finalExit, _finalExit.c_str());
-		char* equalExit = new char[_finalExit.length() + 1];
+		char* finalExit = getDate(row[2], atoi(row[3]));
+		char* equalExit = new char[strlen(finalExit) + 1];
 		strcpy(equalExit, finalExit);
 
 		//출차 날짜를 어긴 차량 구하기
@@ -298,10 +286,14 @@ int VisitingList() {
 				printf("error : %s", mysql_error(mysql));
 			}
 			else {
-				parkingLotState(1, row[4], row[0], 0);
-				printf("       %7s    %14s  %13s %13s\n", row[0], row[1], row[2], finalExit);
-				printf("%s                           방문 차량 %s 출차 조치", BLUE, row[0]);
-				printf("%s", DEF);
+				char query[100];
+				sprintf(query, "UPDATE parking_lot SET state = 0, car_info = 0, car_num = NULL WHERE space_num = '%s'", row[4]);
+				cout << query << endl;
+				int state1 = mysql_query(mysql, query);
+				if (state1 != 0) {
+					printf("error : %s", mysql_error(mysql));
+				}
+				printf("%s                           방문 차량 %s 출차 조치%s", BLUE, row[0], DEF);
 			}
 		}
 		else {
@@ -500,6 +492,97 @@ void drewParkingLotToCarNum() {
 		cout << endl;
 		cout << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << endl;
 	}
+}
+int ExitVisitingCar(char* car_num) {
+	char query[100];
+	sprintf(query, "DELETE FROM visiting WHERE car_num = '%s';", car_num);
+	int state = mysql_query(mysql, query);
+	if (state != 0) return -1;
+
+	char query2[100];
+	sprintf(query2, "UPDATE parking_lot SET car_num = NULL, state = 0, car_info = 0 WHERE car_num = '%s'", car_num);
+	int state2 = mysql_query(mysql, query2);
+	if (state2 != 0) return -1;
+
+	return 0;
+}
+int isVisiter(char* car_num) {
+	//visiting 테이블에서 검색
+	char query[100];
+	sprintf(query, "select * from visiting where car_num = '%s'", car_num);
+	mysql_query(mysql, query);
+	res = mysql_store_result(mysql);
+	row = mysql_fetch_row(res);
+
+	//존재하지 않을 경우 -1 반환
+	if (row == nullptr) {
+		return -1;
+	}
+
+	// 예상 출차 날짜 구하기 
+	char* finalExit = getDate(row[2], atoi(row[3]));
+	char* equalExit = new char[strlen(finalExit) + 1];
+	strcpy(equalExit, finalExit);
+	
+	//출차 날짜를 어긴 차량 구하기
+	//중 현재 날짜 구하기
+	time_t curr_time;
+	struct tm* curr_tm;
+	curr_time = time(NULL);
+	char today[80];
+	curr_tm = localtime(&curr_time);
+	strftime(today, sizeof(today), "%Y%m%d", curr_tm);
+
+	string ahk;
+	for (i = 0; i < 10; i++) {
+		if (isdigit(equalExit[i]) == 0) continue;
+		ahk += equalExit[i];
+	}
+	if (today > ahk) {
+		char del[100];
+		sprintf(del, "delete from visiting where car_num = '%s'", row[0]);
+		int state = mysql_query(mysql, del);
+		char query[100];
+		sprintf(query, "UPDATE parking_lot SET state = 0, car_info = 0, car_num = NULL WHERE space_num = '%s'", row[4]);
+		int state1 = mysql_query(mysql, query);
+		return 1;
+	}
+
+	return 0;
+}
+VisitingCar VisitingGetCarInfo(const char* car_num, VisitingCar& car) {
+	char* num;
+	char* phoneNum;
+	char* space;
+	char* now;
+	char query[100];
+	sprintf(query, "select * from visiting where car_num = '%s'", car_num);
+	int state = mysql_query(mysql, query);
+	res = mysql_store_result(mysql);
+	row = mysql_fetch_row(res);
+
+	num = row[0];
+	phoneNum = row[1];
+	now = row[2];
+	space = row[4];
+	//char* num, char* phoneNum, int period, char* _now, char* space
+	car.setInfo(num, phoneNum, atoi(row[3]), now, space);
+
+	return car;
+}
+char* getDate(char* date, int day) {
+	// 예상 출차 날짜 구하기
+	string str = date; // 입차 날짜 2021-10-07
+	int eixtDay = stoi(str.substr(8, 2)); // 일
+	int eixteNum = day; // 일 수 
+	string exit_day = to_string((eixtDay + eixteNum)); // 입차 일 + 출차 일 수
+	string _finalExit;
+	if (eixtDay + eixteNum >= 10)
+		_finalExit = str.substr(0, 8) + exit_day;
+	else _finalExit = str.substr(0, 8) + '0' + exit_day;
+	char* finalExit = new char[_finalExit.length() + 1];
+	strcpy(finalExit, _finalExit.c_str());
+	return finalExit;
 }
 int mysqlClose() {
 	mysql_close(mysql);

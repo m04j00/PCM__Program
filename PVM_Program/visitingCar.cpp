@@ -1,5 +1,65 @@
 #include "main.h"
 
+void isVisitant() {
+	system("cls");
+	cout << endl << endl << endl << endl;
+	cout << "                                 방문 차량                                 " << endl << endl << endl;
+	cout << "                   주차장에 주차된 차량이 있습니까? Y / N                   " << endl;
+	
+	char YorN = '0';
+	while (true) {
+		gotoxy(0, 8);
+		cout << "                                             " << endl;
+		gotoxy(0, 8);
+		cout << "                          >> ";
+		cin >> YorN;
+		if (YorN == 'Y' || YorN == 'y') {
+			cout << endl;
+			char* input_num = (char*)malloc(sizeof(char) * 20);
+			cout << "                          차량 번호를 입력해주세요                         " << endl;
+			cout << "                          >> ";
+			cin >> input_num;
+			cout << endl << endl;
+			int success = isVisiter(input_num); // 존재(-1), 없음(0)
+			if (success == 0) { // 로그인
+				printf("%s                       방문 차량이 확인되었습니다.                         %s", GREEN, DEF);
+				Sleep(1500);
+				VisitingCar car;
+				VisitingGetCarInfo(input_num, car);
+				VisitingScreen(car);
+				return;
+			}
+			else if (success == -1) {
+				printf("%s          입력한 차량번호와 일치하는 차량번호를 찾을 수 없습니다.          %s\n\n", RED, DEF);
+				printf("                        이전 화면으로 돌아갑니다...                        ");
+				break;
+
+			}
+			else{
+				printf("%s        해당 차량은 최대 주차 기간이 지났습니다. 출차를 요청합니다.        %s\n\n", RED, DEF);
+				Sleep(500);
+				printf("%s                                 출차 완료                                 %s\n\n", GREEN, DEF);
+				printf("                        이전 화면으로 돌아갑니다...                        ");
+				break;
+			}
+		}
+		else if (YorN == 'N' || YorN == 'n') {
+			cout << endl << endl;
+			printf("                                    ---                                    \n\n");
+			Sleep(500);
+			visitingInit();
+			system("cls");
+			return;
+		}
+	}
+
+	//"                     함께 등록한 아이디를 입력해주세요                     "
+
+	Sleep(1500);
+	system("cls");
+	return;
+
+}
 void visitingInit() {
 	system("cls");
 
@@ -51,7 +111,7 @@ void visitingInit() {
 		cout << "                   방문 기간 : ";
 		cin >> period;
 		if (period > 0 && period <= 3) break;
-		
+
 		gotoxy(0, 19);
 		printf("%s  1 ~ 3 사이의 숫자만 입력해주세요. 최대 머무를 수 있는 기간은 3일입니다.  %s", RED, DEF);
 		Sleep(1500);
@@ -125,6 +185,7 @@ int VisitingScreen(VisitingCar& car) {
 			visitingInfoScreen(car);
 		}
 		else if (menuCode == 1) {
+			VisitingExitCar(car);
 			return 0;
 		}
 		else if (menuCode == 2) {
@@ -181,7 +242,9 @@ VisitingCar visitingInfoScreen(VisitingCar& car) {
 	system("cls");
 	cout << endl << endl << endl << endl;
 	cout << "                            방문 차량 주차 관리                            " << endl << endl << endl;
-	car.showCarInfo();
+	cout << "                  차량 번호 : " << car.getNum() << endl;
+	cout << "                  입차 날짜 : " << getDate(car.getNow(), 0) << endl;
+	cout << "             최대 주차 날짜 : " << getDate(car.getNow(), car.getPeriod()) << endl;
 	while (1) {
 		if (keyControl() == SUBMIT) {
 			break;
@@ -190,4 +253,14 @@ VisitingCar visitingInfoScreen(VisitingCar& car) {
 	VisitingScreen(car);
 	system("cls");
 	return car;
+}
+void VisitingExitCar(VisitingCar& car) {
+	system("cls");
+	gotoxy(0, 6);
+	cout << "                             방문 차량 : " << car.getNum() << endl << endl;
+	cout << "                              출차되었습니다.                              " << endl;
+	ExitVisitingCar(car.getNum());
+	Sleep(2000);
+	system("cls");
+	return;
 }

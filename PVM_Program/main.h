@@ -118,24 +118,31 @@ public:
 		strcpy(building, _building);
 		unit = new char[strlen(_unit) + 1];
 		strcpy(unit, _unit);
-		cout << building << endl;
 	}
 };
 class VisitingCar : public carInfo {
 	int period;
 	char* now;
 public:
+	VisitingCar() {}
 	VisitingCar(const char* num, const char* phoneNum, int state, int period, char* _now, char* space)
 		: carInfo(num, phoneNum, state), period(period) {
 		now = new char[strlen(_now) + 1];
 		strcpy(now, _now);
 		cout << "                       방문 차량이 등록 되었습니다.                        ";
 	}
-	void showCarInfo() {
-		cout << "                  차량 번호 : " << carNum << endl;
-		cout << "                  입차 시간 : " << now << endl;
-		cout << "                       기간 : " << period << endl;
+	void setInfo(char* num, char* phoneNum, int period, char* _now, char* space) {
+		setNum(num);
+		setSpace(space);
+		setphoneNum(phoneNum);
+		setState(1);
+		this->period = period;
+		now = new char[strlen(_now) + 1];
+		strcpy(now, _now);
 	}
+	int getPeriod() { return period; }
+	char* getNow() { return now; }
+	
 };
 //console.cpp
 void init();
@@ -180,6 +187,10 @@ int delParkingLot(int num);
 void ResidentState(int what_s, const char* car_num, const char* space_num);
 void VisitingState(int what_s, const char* car_num, const char* space_num);
 void drewParkingLotToCarNum();
+int ExitVisitingCar(char* car_num);
+int isVisiter(char* car_num);
+VisitingCar VisitingGetCarInfo(const char* car_num, VisitingCar& car);
+char* getDate(char* date, int day);
 
 //residentPM
 void residentInit(const char* id);
@@ -193,6 +204,8 @@ VisitingCar gotoParkingLot(VisitingCar& car, int availableNum);
 int VisitingScreen(VisitingCar& car);
 int VisitingMenu();
 VisitingCar visitingInfoScreen(VisitingCar& car);
+void VisitingExitCar(VisitingCar& car);
+void isVisitant();
 
 //admin
 void parkingLotScreen();
