@@ -242,9 +242,9 @@ VisitingCar visitingInfoScreen(VisitingCar& car) {
 	system("cls");
 	cout << endl << endl << endl << endl;
 	cout << "                            방문 차량 주차 관리                            " << endl << endl << endl;
-	cout << "                  차량 번호 : " << car.getNum() << endl;
-	cout << "                  입차 날짜 : " << getDate(car.getNow(), 0) << endl;
-	cout << "             최대 주차 날짜 : " << getDate(car.getNow(), car.getPeriod()) << endl;
+	cout << "                             차량 번호 : " << car.getNum() << endl;
+	cout << "                             입차 날짜 : " << getDate(car.getNow(), 0) << endl;
+	cout << "                        최대 주차 날짜 : " << getDate(car.getNow(), car.getPeriod()) << endl;
 	while (1) {
 		if (keyControl() == SUBMIT) {
 			break;
