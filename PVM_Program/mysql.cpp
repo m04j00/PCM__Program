@@ -106,14 +106,12 @@ int JoinUser(const char* id, const char* pw) {
 		mysql_free_result(res);
 		return 1;
 	}
-	mysql_free_result(res);
 	return 0;
 }
 //차량 등록
 int JoinCarInfo(const char* id, const char* num, const char* pNum, int building, int unit) {
 	char query[100];
 	sprintf(query, "INSERT INTO resident VALUES('%s', '%s', '%s', %d, %d, NULL, 0)", id, num, pNum, building, unit);
-	cout << query << endl;
 	int state = mysql_query(mysql, query);
 	if (state != 0) {
 		printf("error : %s", mysql_error(mysql));
@@ -125,7 +123,6 @@ int JoinCarInfo(const char* id, const char* num, const char* pNum, int building,
 Resident getCarInfo(const char* id, Resident& resi) {
 	// 0 : 계정 있음
 	// -1 : 계정 없음
-	cout << "get car info 옴" << endl;
 	char* num;
 	char* phoneNum;
 	char* _building;
@@ -144,7 +141,6 @@ Resident getCarInfo(const char* id, Resident& resi) {
 	row = mysql_fetch_row(res);
 
 	//Resident(const char* num, const char* phoneNum, int state, const char* _id, const char* _building, const char* _unit)
-	cout << row << endl;
 	if (row[5] == NULL || row[5] == (string)"NULL") {
 		space = new char(5);
 		strcpy(space, "NULL");
@@ -310,7 +306,6 @@ int addParkingLot() {
 			char num[5];
 			if (k < 10) sprintf(num, "%c%d%d%d", j, 0, 0, k);
 			else sprintf(num, "%c%d%d", j, 0, k);
-			cout << num << endl;
 			sprintf(query, "INSERT INTO parking_lot(space_num, car_num, state, car_info) VALUES('%s', 'not', %d, 0)", num, 0);
 			int state = mysql_query(mysql, query);
 			if (state != 0) return -1;
@@ -389,7 +384,6 @@ int parkingLotState(int isState, const char* space_num, const char* car_num, int
 	int state1 = mysql_query(mysql, query);
 	res = mysql_store_result(mysql);
 	my_ulonglong rows = mysql_affected_rows(mysql); // update 적용된 레코드의 수 반환
-	cout << rows << endl;
 	if (rows == 0) { // rows가 0일 경우 이미 주차된 구역
 		mysql_free_result(res);
 		return 1;
@@ -457,13 +451,13 @@ void drewParkingLotToCarNum(int isAdmin) {
 		}
 		else ptr_car[i] = row[1];
 		if (row[2] == (string)"1") arr_state[i] = 1;
-		if(isAdmin)
+		if(isAdmin == 1)
 			if (row[3] == (string)"1") arr_info[i] = 1;
 		i++;
 	}
 	int k = 0; // 주차 구역
 	int j = 0; // 차량 번호 
-	if (isAdmin){
+	if (isAdmin == 1){
 		for (i = 0; i < 20; i++) {
 			cout << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << endl;
 			for (int z = 0; z < 5; z++) {
@@ -489,6 +483,34 @@ void drewParkingLotToCarNum(int isAdmin) {
 			cout << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << endl;
 		}
 		return;
+	}
+	else if(isAdmin == 2){
+		for (i = 0; i < 20; i++) {
+			cout << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << endl;
+			for (int z = 0; z < 5; z++, k++) {
+				if (strcmp(ptr_car[k], "2000") == 0) {
+					printf(" │   %s%s%s   │  ", YELLOW, ptr_space[k], DEF);
+				}
+				else if (arr_state[k] == 1) {
+					printf(" │   %s%s%s   │  ", RED, ptr_space[k], DEF);
+				}
+				else printf(" │   %s%s%s   │  ", GREEN, ptr_space[k], DEF);
+			}
+			cout << endl;
+			for (int z = 0; z < 5; z++, j++) {
+				if (strcmp(ptr_car[j], "2000") == 0) {
+					printf(" │   %s%s%s   │  ", YELLOW, ptr_car[j], DEF);
+				}
+				else if (arr_state[j] == 1) {
+					printf(" │   %s%s%s   │  ", RED, ptr_car[j], DEF);
+				}
+				else {
+					printf(" │          │  ");
+				}
+			}
+			cout << endl;
+			cout << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << endl;
+		}
 	}
 	else {
 		for (i = 0; i < 20; i++) {

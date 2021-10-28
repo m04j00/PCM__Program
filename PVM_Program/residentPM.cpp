@@ -5,11 +5,13 @@ int afterLoginMain(const char* id) {
 	Resident resi;
 	residentInit(id);
 	getCarInfo(id, resi);
-	cout << resi.getNum() << endl;
-	cout << resi.getSpace() << endl;
+
 	while (1) {
 		gotoxy(21, 4);
 		cout << "아파트 주차 및 차량 관리 시스템";
+		gotoxy(0, 7);
+		resi.showState();
+		cout << endl;
 		int menuCode = afterLoginMainMenu();
 		if (menuCode == 0) {
 			ParkingScreen(resi);
@@ -107,29 +109,39 @@ Resident gotoParkingLot(Resident& resi, int availableNum) {
 			break;
 		}
 	}
-	while (1) {
-		if (keyControl() == SUBMIT) {
-			break;
-		}
-		system("cls");
-	}
+	Sleep(1500);
+	system("cls");
 	return resi;
 }
 Resident MgtScreen(Resident& resi) {
 	system("cls");
 	cout << endl << endl << endl << endl;
-	cout << "                          아파트 차량 관리 시스템                          " << endl << endl << endl;
 
 	int state = resi.getState();
 	if (state == 1) {
-		cout << "                              주차 위치 : " << resi.getSpace() << endl;
-	}
-	DrewParkingLot(resi.getNum());
-	while (1) {
-		if (keyControl() == SUBMIT) {
-			break;
+		cout << "                                < 주 차 장 >                                " << endl << endl;
+		cout << "                              주차 위치 : " << resi.getSpace() << endl << endl;
+		
+		printf("                            * %s노란색%s : 주차 위치                              ", YELLOW, DEF);
+		cout << "                        * 뒤로가기 : 스페이스바                          " << endl;
+		cout << endl << endl;
+		drewParkingLotToCarNum(2);
+
+		while (1) {
+			if (keyControl() == SUBMIT) {
+				break;
+			}
+			system("cls");
 		}
 	}
+	else {
+		cout << endl << endl;
+		cout << "                        차량이 현재 출차 상태입니다.                        " << endl;
+		Sleep(500);
+		printf("                        이전 화면으로 돌아갑니다...                        ");
+		Sleep(1500);
+	} 
+
 	return resi;
 }
 

@@ -5,19 +5,20 @@ void isVisitant() {
 	cout << endl << endl << endl << endl;
 	cout << "                                 방문 차량                                 " << endl << endl << endl;
 	cout << "                   주차장에 주차된 차량이 있습니까? Y / N                   " << endl;
-	
+
 	char YorN = '0';
 	while (true) {
 		gotoxy(0, 8);
 		cout << "                                             " << endl;
 		gotoxy(0, 8);
-		cout << "                          >> ";
+		cout << "                   >> ";
 		cin >> YorN;
 		if (YorN == 'Y' || YorN == 'y') {
 			cout << endl;
 			char* input_num = (char*)malloc(sizeof(char) * 20);
-			cout << "                          차량 번호를 입력해주세요                         " << endl;
-			cout << "                          >> ";
+			//cout << "                          차량 번호를 입력해주세요                         " << endl;
+			cout << "                   차량 번호를 입력해주세요 : ";
+			//cout << "                          >> ";
 			cin >> input_num;
 			cout << endl << endl;
 			int success = isVisiter(input_num); // 존재(-1), 없음(0)

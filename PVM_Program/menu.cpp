@@ -49,11 +49,49 @@ int mainMenu() {
 }
 int afterLoginMainMenu() {
 	int x = 33;
-	int y = 7;
+	int y = 10;
 	gotoxy(x - 2, y);
 	cout << "> 주차 관리";
 	gotoxy(x, y + 1);
 	cout << "차량 관리";
+	gotoxy(x, y + 2);
+	cout << "뒤로 가기";
+	cout << endl << endl << endl;
+
+	while (1) {
+		int num = keyControl();
+		switch (num) {
+		case UP: {
+			if (y > 10) {
+				gotoxy(x - 2, y);
+				cout << " ";
+				gotoxy(x - 2, --y);
+				cout << ">";
+			}
+			break;
+		}
+		case DOWN: {
+			if (y < 12) {
+				gotoxy(x - 2, y);
+				cout << " ";
+				gotoxy(x - 2, ++y);
+				cout << ">";
+			}
+			break;
+		}
+		case SUBMIT: {
+			return y - 10;
+		}
+		}
+	}
+	return 0;
+}
+
+int MgtMenu() {
+	int x = 33;
+	int y = 15;
+	gotoxy(x - 2, y);
+	cout << "> 주차장 (주차 위치 확인)";
 	gotoxy(x, y + 2);
 	cout << "뒤로 가기";
 	cout << endl << endl << endl;

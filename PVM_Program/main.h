@@ -21,6 +21,7 @@ using namespace std;
 #define BLUE "\033[34m"
 #define GREEN "\033[32m"
 #define WHITE "\033[37m"
+#define YELLOW "\033[33m"
 
 class User {
 protected:
@@ -69,14 +70,16 @@ public:
 		cout << "                             차량 번호 : " << carNum;
 	}
 	int getState() {
+		return parkingState;
+
+	}
+	int showState() {
 		if (parkingState == 1) {
-			cout << endl << endl;
-			cout << "                               " << carNum << " 입차 상태                              " << endl;
+			printf("                    차량번호 %s은/는 %s입차%s 상태입니다.                    ", carNum, BLUE, DEF);
 			return 1;
 		}
 		else if (parkingState == 0) {
-			cout << endl << endl;
-			cout << "                               " << carNum << " 출차 상태                              " << endl;
+			printf("                    차량번호 %s은/는 %s출차%s 상태입니다.                    ", carNum, GREEN, DEF);
 			parkingState = 0;
 			return 0;
 		}
@@ -156,6 +159,8 @@ void login();
 int afterLoginMain(const char*);
 int afterLoginMainMenu();
 void parkingLotScreen();
+int MgtMenu();
+
 //info.cpp
 void infoScreen();
 

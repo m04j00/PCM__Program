@@ -223,9 +223,8 @@ int carDelReg() {
 	}
 	cout << endl << "---------------------------------------------------------------------------" << endl << endl;
 	
-
-	cout << "                       해당 정보가 맞습니까 ? Y / N                        " << endl;
-	cout << "                       >> ";
+	cout << "                     해당 정보가 맞습니까 ?     Y / N                      " << endl;
+	cout << "                     >> ";
 	cin >> YorN;
 	cout << endl;
 	if (YorN == 'Y' || YorN == 'y') {
