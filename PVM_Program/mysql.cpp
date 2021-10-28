@@ -18,7 +18,6 @@ void connect() {
 		exit(0);
 	}
 	else {
-		cout << "success" << endl;
 		mysql_set_character_set(mysql, "euckr");
 	}
 
@@ -40,7 +39,7 @@ int SearchUserId(const char* id) {
 	return -1;
 }
 //차량번호 유무
-int SearchCarNum(const char* num) {
+int SearchCarNum(const char* num, int isVisit) {
 	char query[100];
 	//resident 테이블에서 검색
 	sprintf(query, "select * from resident where car_num = '%s'", num);
@@ -54,19 +53,23 @@ int SearchCarNum(const char* num) {
 		return -1;
 	}
 	mysql_free_result(res);
-
 	//visiting 테이블에서 검색
-	char query2[100];
-	sprintf(query2, "select * from visiting where car_num = '%s'", num);
-	mysql_query(mysql, query2);
-	res = mysql_store_result(mysql);
-	row = mysql_fetch_row(res);
+	if (isVisit == 1) {
+		char query2[100];
+		sprintf(query2, "select * from visiting where car_num = '%s'", num);
+		mysql_query(mysql, query2);
+		res = mysql_store_result(mysql);
+		row = mysql_fetch_row(res);
 
+		if (row != nullptr) {
+			mysql_free_result(res);
+			return -1;
+		}
+	}
 	//존재하지 않을 경우 0 반환
 	if (row == nullptr) {
 		return 0;
 	}
-	return -1;
 }
 //login용
 int FindUser(const char* id, const char* pw) {
@@ -200,6 +203,10 @@ int DeleteCarInfo(const char* num, const char* id) {
 	char query2[100];
 	sprintf(query2, "delete from user where id = '%s'", id);
 	int state2 = mysql_query(mysql, query2);
+
+	char query3[100];
+	sprintf(query3, "UPDATE parking_lot SET car_num = NULL, state = 0, car_info = 0 WHERE car_num = '%s'", num);
+	mysql_query(mysql, query3);
 	return 0;
 }
 int ResidentList() {
@@ -314,7 +321,7 @@ int addParkingLot() {
 	}
 	return 0;
 }
-void DrewParkingLot(char* car_num) {
+void DrewParkingLot() {
 	char query[100];
 	sprintf(query, "select * from parking_lot");
 	int state = mysql_query(mysql, query);
@@ -322,35 +329,15 @@ void DrewParkingLot(char* car_num) {
 	fields = mysql_num_fields(res);
 	int cnt = 0;
 
-	if (car_num != NULL) {
-		//if (row[1] == car_num) cout << "true" << endl;
-		int num = -1;
-
-		//while (row = mysql_fetch_row(res))
-		//{
-		//	if (strcmp(row[1], car_num) == 0) num = 0;
-		//	else num = -1;
-		//	if(num == 0) printf("   [  %s%s%s  ]  ", WHITE , row[0], DEF);
-		//	else if (row[2] == (string)"0") printf("   [  %s%s%s  ]  ", GREEN, row[0], DEF);
-		//	else if (row[2] == (string)"1") printf("   [  %s%s%s  ]  ", RED, row[0], DEF);
-		//	cnt++;
-		//	if (cnt % 5 == 0) cout << endl;
-		//	if (cnt % 10 == 0) cout << endl;
-		//}
+	while (row = mysql_fetch_row(res))
+	{
+		if (row[3] == (string)"1") printf("   [  %s%s%s  ]  ", BLUE, row[0], DEF);
+		else if (row[2] == (string)"0") printf("   [  %s%s%s  ]  ", GREEN, row[0], DEF);
+		else if (row[2] == (string)"1") printf("   [  %s%s%s  ]  ", RED, row[0], DEF);
+		cnt++;
+		if (cnt % 5 == 0) cout << endl;
+		if (cnt % 10 == 0) cout << endl;
 	}
-	else {
-		while (row = mysql_fetch_row(res))
-		{
-			if (row[3] == (string)"1") printf("   [  %s%s%s  ]  ", BLUE, row[0], DEF);
-			else if (row[2] == (string)"0") printf("   [  %s%s%s  ]  ", GREEN, row[0], DEF);
-			else if (row[2] == (string)"1") printf("   [  %s%s%s  ]  ", RED, row[0], DEF);
-			cnt++;
-			if (cnt % 5 == 0) cout << endl;
-			if (cnt % 10 == 0) cout << endl;
-		}
-	}
-
-
 }
 //주차 가능 구역 개수
 int parkingAvailableNum() {
@@ -431,7 +418,7 @@ void VisitingState(int what_s, const char* space_num, const char* car_num) {
 //│  A001  │
 //│  0000  │
 //└────────┘
-void drewParkingLotToCarNum(int isAdmin) {
+void drewParkingLotToCarNum(int isAdmin, char* car_num) {
 	char* ptr_space[100]; // 주차 구역 이름 담긴 배열
 	char* ptr_car[100]; // 주차된 차량 번호 담긴 배열
 	int arr_state[100] = { 0, }; // 주차 상태라면 1 아니면 0
@@ -488,7 +475,7 @@ void drewParkingLotToCarNum(int isAdmin) {
 		for (i = 0; i < 20; i++) {
 			cout << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << endl;
 			for (int z = 0; z < 5; z++, k++) {
-				if (strcmp(ptr_car[k], "2000") == 0) {
+				if (strcmp(ptr_car[k], car_num) == 0) {
 					printf(" │   %s%s%s   │  ", YELLOW, ptr_space[k], DEF);
 				}
 				else if (arr_state[k] == 1) {
@@ -498,7 +485,7 @@ void drewParkingLotToCarNum(int isAdmin) {
 			}
 			cout << endl;
 			for (int z = 0; z < 5; z++, j++) {
-				if (strcmp(ptr_car[j], "2000") == 0) {
+				if (strcmp(ptr_car[j],  car_num) == 0) {
 					printf(" │   %s%s%s   │  ", YELLOW, ptr_car[j], DEF);
 				}
 				else if (arr_state[j] == 1) {

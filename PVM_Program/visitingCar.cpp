@@ -88,7 +88,7 @@ void visitingInit() {
 	}
 	cout << "                   차량 번호 : ";
 	cin >> carNum;
-	int isCarNum = SearchCarNum(carNum);
+	int isCarNum = SearchCarNum(carNum, 1);
 	if (isCarNum == -1) {
 		printf("\n%s                        이미 등록된 차량번호입니다.                         %s\n", RED, DEF);
 		printf("                        이전 화면으로 돌아갑니다...                        ");
@@ -129,7 +129,7 @@ VisitingCar gotoParkingLot(VisitingCar& car, int availableNum) {
 	cout << endl << endl << endl << endl;
 	cout << "                                   주차장                                  " << endl << endl;
 	cout << "                         주차 가능 구역 현황 " << availableNum << " / 100" << endl << endl;
-	DrewParkingLot(NULL);
+	DrewParkingLot();
 	while (true) {
 		gotoxy(0, 40);
 		cout << "                                                                                ";

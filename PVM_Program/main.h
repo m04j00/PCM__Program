@@ -175,7 +175,7 @@ int mysqlClose();
 int mysqlMain();
 int FindUser(const char*, const char*);
 int SearchUserId(const char*);
-int SearchCarNum(const char*);
+int SearchCarNum(const char*, int);
 int FindCarInfo(const char*);
 int JoinUser(const char*, const char*);
 int JoinCarInfo(const char* id, const char* num, const char* pNum, int building, int unit);
@@ -186,12 +186,12 @@ int visitingCarRegister(const char*, const char*, int);
 int VisitingList();
 int addParkingLot();
 int parkingAvailableNum();
-void DrewParkingLot(char* car_num);
+void DrewParkingLot();
 int parkingLotState(int num, const char* space_num, const char* car_num, int);
 int delParkingLot(int num);
 void ResidentState(int what_s, const char* car_num, const char* space_num);
 void VisitingState(int what_s, const char* car_num, const char* space_num);
-void drewParkingLotToCarNum(int);
+void drewParkingLotToCarNum(int, char*);
 int ExitVisitingCar(char* car_num);
 int isVisiter(char* car_num);
 VisitingCar VisitingGetCarInfo(const char* car_num, VisitingCar& car);
@@ -214,4 +214,5 @@ void isVisitant();
 
 //admin
 void AdminParkingLotScreen();
+int gotoParkingLot(char* car_num);
 #endif

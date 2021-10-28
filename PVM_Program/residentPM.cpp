@@ -83,7 +83,7 @@ Resident gotoParkingLot(Resident& resi, int availableNum) {
 	cout << endl << endl << endl << endl;
 	cout << "                                   주차장                                  " <<  endl << endl;
 	cout << "                         주차 가능 구역 현황 " << availableNum << " / 100" << endl << endl;
-	DrewParkingLot(NULL);
+	DrewParkingLot();
 	while (true) {
 		gotoxy(0, 40);
 		cout << "                                                                                ";
@@ -125,7 +125,7 @@ Resident MgtScreen(Resident& resi) {
 		printf("                            * %s노란색%s : 주차 위치                              ", YELLOW, DEF);
 		cout << "                        * 뒤로가기 : 스페이스바                          " << endl;
 		cout << endl << endl;
-		drewParkingLotToCarNum(2);
+		drewParkingLotToCarNum(2, resi.getNum());
 
 		while (1) {
 			if (keyControl() == SUBMIT) {

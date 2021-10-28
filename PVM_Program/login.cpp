@@ -6,8 +6,8 @@ void login() {
 	char* pw = (char*)malloc(sizeof(char) * 20);
 	cout << endl << endl << endl;
 	cout << "                                   로그인                                  " << endl << endl;
-	cout << "                  * 등록된 관리자만 로그인할 수 있습니다.                  " << endl;
-	cout << "           * 관리자를 통해 등록된 입주민만 로그인할 수 있습니다.           " << endl << endl;
+	cout << "           * 관리자는 사전에 등록된 계정만 로그인할 수 있습니다.           " << endl;
+	cout << "       * 입주민은 관리자를 통해 등록된 계정만 로그인할 수 있습니다.        " << endl << endl << endl;
 
 	cout << "                      I      D : ";
 	cin >> id;
