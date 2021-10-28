@@ -95,46 +95,6 @@ int ResiMgtScreen() {
 	return 0;
 
 }
-int ResidentMgtMenu() {
-	int x = 31;
-	int y = 7;
-	gotoxy(x - 2, y);
-	cout << "> 차  량  등  록";
-	gotoxy(x, y + 1);
-	cout << "차량 등록 해지";
-	gotoxy(x, y + 2);
-	cout << "차  량  조  회";
-	gotoxy(x, y + 3);
-	cout << "뒤  로  가  기";
-
-	while (1) {
-		int num = keyControl();
-		switch (num) {
-		case UP: {
-			if (y > 7) {
-				gotoxy(x - 2, y);
-				cout << " ";
-				gotoxy(x - 2, --y);
-				cout << ">";
-			}
-			break;
-		}
-		case DOWN: {
-			if (y < 10) {
-				gotoxy(x - 2, y);
-				cout << " ";
-				gotoxy(x - 2, ++y);
-				cout << ">";
-			}
-			break;
-		}
-		case SUBMIT: {
-			return y - 7;
-		}
-		}
-	}
-	return 0;
-}
 void VisitingMgtScreen() {
 	system("cls");
 	cout << endl << endl << endl << endl;

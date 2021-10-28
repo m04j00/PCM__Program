@@ -262,9 +262,6 @@ int VisitingList() {
 		curr_tm = localtime(&curr_time);
 		strftime(today, sizeof(today), "%Y%m%d", curr_tm);
 
-		//string tomorrow;
-		//tomorrow += to_string(curr_tm->tm_year + 1900) += to_string(curr_tm->tm_mon + 1) += to_string(curr_tm->tm_mday + 1);
-
 		string ahk;
 		for (i = 0; i < 10; i++) {
 			if (isdigit(equalExit[i]) == 0) continue;
