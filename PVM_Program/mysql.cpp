@@ -12,8 +12,11 @@ int fields;
 int i;
 
 void connect() {
-	if (!mysql_real_connect(mysql, MYSQLIP, MYSQLUSER, MYSQLPW, MYSQLDB, 3306, NULL, 0))
-		cout << "error" << endl;
+	if (!mysql_real_connect(mysql, MYSQLIP, MYSQLUSER, MYSQLPW, MYSQLDB, 3306, NULL, 0)) {
+		gotoxy(0, 4);
+		cout << "            데이터베이스가 연결되지 않아 프로그램을 종료합니다.            " << endl << endl << endl;
+		exit(0);
+	}
 	else {
 		cout << "success" << endl;
 		mysql_set_character_set(mysql, "euckr");
