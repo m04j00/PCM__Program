@@ -31,46 +31,6 @@ int adminScreen() {
 	return 0;
 
 }
-int adminMenu() {
-	int x = 31;
-	int y = 7;
-	gotoxy(x - 2, y);
-	cout << "> 입주민 차량 관리";
-	gotoxy(x, y + 1);
-	cout << "방문  차량  관리";
-	gotoxy(x, y + 2);
-	cout << "주 차 장   관 리";
-	gotoxy(x, y + 3);
-	cout << "뒤  로    가  기";
-
-	while (1) {
-		int num = keyControl();
-		switch (num) {
-		case UP: {
-			if (y > 7) {
-				gotoxy(x - 2, y);
-				cout << " ";
-				gotoxy(x - 2, --y);
-				cout << ">";
-			}
-			break;
-		}
-		case DOWN: {
-			if (y < 10) {
-				gotoxy(x - 2, y);
-				cout << " ";
-				gotoxy(x - 2, ++y);
-				cout << ">";
-			}
-			break;
-		}
-		case SUBMIT: {
-			return y - 7;
-		}
-		}
-	}
-	return 0;
-}
 int ResiMgtScreen() {
 	system("cls");
 
@@ -98,10 +58,13 @@ int ResiMgtScreen() {
 void VisitingMgtScreen() {
 	system("cls");
 	cout << endl << endl << endl << endl;
-	cout << "                              방문 차량 현황                               " << endl << endl << endl;
+	cout << "                              방문 차량 현황                               " << endl << endl;
+	cout << "                          * 뒤로가기 : 스페이스바                          " << endl << endl << endl;
 	int num = VisitingList();
-	if (num == 1)
-		cout << endl << endl <<  "                     주차된 방문차량이 없습니다." << endl << endl;
+	if (num == 1) {
+		cout << endl << endl;
+		cout << "                        주차된 방문차량이 없습니다.                        " << endl << endl;
+	}
 	while (1) {
 		if (keyControl() == SUBMIT) {
 			system("cls");
@@ -122,7 +85,7 @@ int carRegistration() {
 	cout << "                                 차량 등록                                 " << endl << endl << endl;
 	cout << "               차량 번호 : ";
 	cin >> carNum;
-	int isCar = SearchCarNum(carNum);
+	int isCar = SearchCarNum(carNum, 0);
 	if (isCar == -1) {
 		printf("\n%s                        이미 등록된 차량번호입니다.                         %s\n", RED, DEF);
 		printf("                        이전 화면으로 돌아갑니다...                        ");
@@ -131,11 +94,11 @@ int carRegistration() {
 	}
 	cout << "               전화 번호 : ";
 	cin >> phoneNum;
-	cout << "               동 수 : ";
+	cout << "               동     수 : ";
 	cin >> nBuilding;
-	cout << "               호 수 : ";
+	cout << "               호     수 : ";
 	cin >> nUnit;
-	cout << "               아이디 : ";
+	cout << "               I       D : ";
 	cin >> id;
 	cout << "               비밀 번호 : ";
 	cin >> password;
@@ -145,32 +108,82 @@ int carRegistration() {
 	if (isUser == 0) {
 		JoinUser(id, password);
 		JoinCarInfo(id, carNum, phoneNum, nBuilding, nUnit);
-		printf("%s                                등록되었습니다.                                %s", GREEN, DEF);
-	}
-	else printf("%s                          이미 등록된 아이디입니다.                           %s", RED, DEF);
-		
-	Sleep(1000);
-	while (1) {
-		if (keyControl() == SUBMIT) {
-			system("cls");
-			return 0;
+		printf("%s                            차량이 등록되었습니다.                             %s\n\n", GREEN, DEF);
+		cout << "                       주차를 진행하시겠습니까? Y / N                       " << endl;
+		char YorN = '0';
+		while (true) {
+			gotoxy(0, 19);
+			cout << "                                                 " << endl;
+			gotoxy(0, 19);
+			cout << "                       >> ";
+			cin >> YorN;
+			if (YorN == 'Y' || YorN == 'y') {
+				cout << endl << "                    1초 뒤 화면이 자동으로 이동됩니다...                    ";
+				Sleep(1500);
+				gotoParkingLot(carNum);
+				return 0;
+			}
+			else if (YorN == 'N' || YorN == 'n') {
+				break;
+			}
 		}
 	}
+	else printf("%s                          이미 등록된 아이디입니다.                           %s", RED, DEF);
+	
+	cout << endl << endl;
+	printf("                        이전 화면으로 돌아갑니다...                        ");
+	Sleep(1500);
+
 	system("cls");
 	return 0;
 
 }
-
+int gotoParkingLot(char* car_num) {
+	system("cls");
+	char* parkingSpace = (char*)malloc(sizeof(char) * 10);
+	int availableNum = parkingAvailableNum();
+	cout << endl << endl << endl << endl;
+	cout << "                                   주차장                                  " << endl << endl;
+	cout << "                         주차 가능 구역 현황 " << availableNum << " / 100" << endl;
+	printf("              * %s초록색%s : 주차 가능 구역, %s붉은색%s : 주차된 구역               \n\n", GREEN, DEF, RED, DEF);
+	DrewParkingLot();
+	while (true) {
+		gotoxy(0, 40);
+		cout << "                                                                                ";
+		gotoxy(0, 42);
+		cout << "                                                                                ";
+		gotoxy(0, 40);
+		cout << "                     주차 구역을 입력해주세요 >> ";
+		cin >> parkingSpace;
+		int checkingParking = parkingLotState(1, parkingSpace, car_num, 0);
+		gotoxy(0, 42);
+		if (checkingParking == -1) {
+			printf("%s        주차 구역을 잘못 입력했습니다. 다시 입력해주세요.%s", RED, DEF);
+			Sleep(1500);
+		}
+		else if (checkingParking == 1) {
+			printf("%s        이미 주차된 구역입니다. 다시 입력해주세요.%s", RED, DEF);
+			Sleep(1500);
+		}
+		else if (checkingParking == 0) {
+			ResidentState(1, parkingSpace, car_num);
+			cout << "                              주차되었습니다.                              ";
+			break;
+		}
+	}
+	Sleep(1500);
+	system("cls");
+	return 0;
+}
 int carDelReg() {
 	system("cls");
 	char* carNum = (char*)malloc(sizeof(char) * 10);
 	int selectBuilding = 0;
 	int selectUnit = 0;
 	string selectPhoneNum = "aaaaaa";
-	char YorN = '0';
 
 	cout << endl << endl << endl << endl;
-	cout << "                               차량 등록 해지                              " << endl << endl;
+	cout << "                               차량 등록 해지                              " << endl << endl << endl;
 	cout << "                    차량 번호 : ";
 	cin >> carNum;
 	cout << endl << endl;
@@ -184,42 +197,46 @@ int carDelReg() {
 	cout << endl << "---------------------------------------------------------------------------" << endl << endl;
 	
 	cout << "                     해당 정보가 맞습니까 ?     Y / N                      " << endl;
-	cout << "                     >> ";
-	cin >> YorN;
-	cout << endl;
-	if (YorN == 'Y' || YorN == 'y') {
-		char* inputId = (char*)malloc(sizeof(char) * 20);
-		cout << "                     함께 등록한 아이디를 입력해주세요                     " << endl;
+	char YorN = '0';
+	while (true) {
+		gotoxy(0, 17);
+		cout << "                                             " << endl;
+		gotoxy(0, 17);
 		cout << "                     >> ";
-		cin >> inputId;
-		cout << endl << endl;
-		int success = DeleteCarInfo(carNum, inputId);
-		if (success == 0)
-			printf("%s                        정상적으로 해지되었습니다.                         %s", GREEN, DEF);
-		else {
-			printf("%s           입력한 아이디와 일치하지 않아 해지가 취소 되었습니다.           %s\n\n", RED, DEF);
+		cin >> YorN;
+		if (YorN == 'Y' || YorN == 'y') {
+			char* inputId = (char*)malloc(sizeof(char) * 20);
+			cout << endl;
+			cout << "                     함께 등록한 아이디를 입력해주세요                     " << endl;
+			cout << "                     >> ";
+			cin >> inputId;
+			cout << endl << endl;
+			int success = DeleteCarInfo(carNum, inputId);
+			if (success == 0) {
+				printf("%s                        정상적으로 해지되었습니다.                         %s", GREEN, DEF);
+				cout << endl << endl << "                    1초 뒤 화면이 자동으로 이동됩니다...                    ";
+			}
+			else {
+				printf("%s           입력한 아이디와 일치하지 않아 해지가 취소 되었습니다.           %s\n\n", RED, DEF);
+				printf("                        이전 화면으로 돌아갑니다...                        ");
+			}
+			break;
+		}
+		else if (YorN == 'N' || YorN == 'n') {
+			printf("%s                              취소되었습니다.                              %s\n\n", RED, DEF);
 			printf("                        이전 화면으로 돌아갑니다...                        ");
-			Sleep(1500);
-			return 0;
+			break;
 		}
 	}
-	//"                     함께 등록한 아이디를 입력해주세요                     "
-	else	
-		printf("%s                              취소되었습니다.                              %s\n\n", RED, DEF);
-	Sleep(1000);
-	while (1) {
-		if (keyControl() == SUBMIT) {
-			system("cls");
-			return 0 ;
-		}
-	}
+	Sleep(1500);
 	system("cls");
 	return 0;
 }
 void ShowResidentList() {
 	system("cls");
-	cout << endl << endl;
-	cout << "                                 차량 조회                                 " << endl;
+	cout << endl << endl << endl << endl;
+	cout << "                                 차량 조회                                 " << endl << endl;
+	cout << "                          * 뒤로가기 : 스페이스바                          " << endl;
 	cout << endl << endl;
 	ResidentList();
 	while (1) {
@@ -238,7 +255,7 @@ void AdminParkingLotScreen() {
 	printf(" * %s초록색%s : 빈 구역, %s붉은색%s : 입주민 주차 상태, %s청색%s : 방문 차량 주차 상태 \n", GREEN, DEF, RED, DEF, BLUE, DEF);
 	cout << "                          * 뒤로가기 : 스페이스바                          " << endl;
 	cout << endl << endl;
-	drewParkingLotToCarNum(1);
+	drewParkingLotToCarNum(1, NULL);
 
 	while (1) {
 		if (keyControl() == SUBMIT) {
