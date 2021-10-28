@@ -5,13 +5,14 @@ int main() {
 		mainTitle();
 		int menuCode = mainMenu();
 		if (menuCode == 0) {
-			login();
+			parkingLotScreen();
 		}
 		else if (menuCode == 1) {
-			isVisitant();
+			login();
+			
 		}
 		else if (menuCode == 2) {
-			parkingLotScreen();
+			isVisitant();
 		}
 		else if (menuCode == 3) {
 			infoScreen();

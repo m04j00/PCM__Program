@@ -8,11 +8,11 @@ int mainMenu() {
 	int x = 33;
 	int y = 7;
 	gotoxy(x - 2, y);
-	cout << "> 로  그  인";
+	cout << "> 주  차  장";
 	gotoxy(x, y + 1);
-	cout << "방문  차량";
+	cout << "로  그  인";
 	gotoxy(x, y + 2);
-	cout << "주  차  장";
+	cout << "방문  차량";
 	gotoxy(x, y + 3);
 	cout << "사용  방법";
 	gotoxy(x, y + 4);
@@ -95,6 +95,48 @@ int MgtMenu() {
 	gotoxy(x, y + 2);
 	cout << "뒤로 가기";
 	cout << endl << endl << endl;
+
+	while (1) {
+		int num = keyControl();
+		switch (num) {
+		case UP: {
+			if (y > 7) {
+				gotoxy(x - 2, y);
+				cout << " ";
+				gotoxy(x - 2, --y);
+				cout << ">";
+			}
+			break;
+		}
+		case DOWN: {
+			if (y < 9) {
+				gotoxy(x - 2, y);
+				cout << " ";
+				gotoxy(x - 2, ++y);
+				cout << ">";
+			}
+			break;
+		}
+		case SUBMIT: {
+			return y - 7;
+		}
+		}
+	}
+	return 0;
+}
+int VisitingMenu() {
+	int x = 27;
+	int y = 7;
+	gotoxy(x - 2, y);
+	//cout << "                             방문 차량 메뉴 창                             ";
+	//cout << "                                 차량 정보                                 ";
+	//cout << "                                 출차 하기                                 ";
+	//cout << "                           주차된 상태에서 나가기                          ";
+	cout << ">       차량 정보       ";
+	gotoxy(x, y + 1);
+	cout << "      출차 하기       ";
+	gotoxy(x, y + 2);
+	cout << "주차된 상태에서 나가기";
 
 	while (1) {
 		int num = keyControl();
