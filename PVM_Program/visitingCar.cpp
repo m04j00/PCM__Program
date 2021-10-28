@@ -53,9 +53,6 @@ void isVisitant() {
 			return;
 		}
 	}
-
-	//"                     함께 등록한 아이디를 입력해주세요                     "
-
 	Sleep(1500);
 	system("cls");
 	return;
@@ -121,15 +118,8 @@ void visitingInit() {
 	cout << endl << endl;
 	VisitingCar car(carNum, phoneNum, 0, period, buf, NULL);
 	visitingCarRegister(carNum, phoneNum, period);
-	Sleep(1000);
-	while (1) {
-		if (keyControl() == SUBMIT) {
-			break;
-		}
-	}
+	Sleep(1500);
 	gotoParkingLot(car, parkingAvailNum);
-	system("cls");
-	visitingInfoScreen(car);
 	system("cls");
 	return;
 }
@@ -149,7 +139,6 @@ VisitingCar gotoParkingLot(VisitingCar& car, int availableNum) {
 		cout << "                     주차 구역을 입력해주세요 >> ";
 		cin >> parkingSpace;
 		char* car_num = car.getNum();
-		cout << car_num << endl;
 		int checkingParking = parkingLotState(1, parkingSpace, car_num, 1);
 		gotoxy(0, 42);
 		if (checkingParking == -1) {
@@ -167,12 +156,9 @@ VisitingCar gotoParkingLot(VisitingCar& car, int availableNum) {
 			break;
 		}
 	}
-	while (1) {
-		if (keyControl() == SUBMIT) {
-			break;
-		}
-		system("cls");
-	}
+	Sleep(1500);
+	VisitingScreen(car);
+	system("cls");
 	return car;
 }
 int VisitingScreen(VisitingCar& car) {
@@ -197,61 +183,20 @@ int VisitingScreen(VisitingCar& car) {
 	return 0;
 
 }
-int VisitingMenu() {
-	int x = 27;
-	int y = 7;
-	gotoxy(x - 2, y);
-	//cout << "                             방문 차량 메뉴 창                             ";
-	//cout << "                                 차량 정보                                 ";
-	//cout << "                                 출차 하기                                 ";
-	//cout << "                           주차된 상태에서 나가기                          ";
-	cout << ">       차량 정보       ";
-	gotoxy(x, y + 1);
-	cout << "      출차 하기       ";
-	gotoxy(x, y + 2);
-	cout << "주차된 상태에서 나가기";
 
-	while (1) {
-		int num = keyControl();
-		switch (num) {
-		case UP: {
-			if (y > 7) {
-				gotoxy(x - 2, y);
-				cout << " ";
-				gotoxy(x - 2, --y);
-				cout << ">";
-			}
-			break;
-		}
-		case DOWN: {
-			if (y < 9) {
-				gotoxy(x - 2, y);
-				cout << " ";
-				gotoxy(x - 2, ++y);
-				cout << ">";
-			}
-			break;
-		}
-		case SUBMIT: {
-			return y - 7;
-		}
-		}
-	}
-	return 0;
-}
 VisitingCar visitingInfoScreen(VisitingCar& car) {
 	system("cls");
 	cout << endl << endl << endl << endl;
-	cout << "                            방문 차량 주차 관리                            " << endl << endl << endl;
-	cout << "                             차량 번호 : " << car.getNum() << endl;
-	cout << "                             입차 날짜 : " << getDate(car.getNow(), 0) << endl;
+	cout << "                            방문 차량 주차 관리                            " << endl << endl;
+	cout << "                         * 뒤로가기 : 스페이스바                           " << endl << endl;
+	cout << "                           차량 번호   : " << car.getNum() << endl;
+	cout << "                           입차 날짜   : " << getDate(car.getNow(), 0) << endl;
 	cout << "                        최대 주차 날짜 : " << getDate(car.getNow(), car.getPeriod()) << endl;
 	while (1) {
 		if (keyControl() == SUBMIT) {
 			break;
 		}
 	}
-	VisitingScreen(car);
 	system("cls");
 	return car;
 }
