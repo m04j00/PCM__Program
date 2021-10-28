@@ -21,7 +21,7 @@ int adminScreen() {
 		}
 		else if (menuCode == 2) {
 			system("cls");
-			parkingLotScreen();
+			AdminParkingLotScreen();
 		}
 		else if (menuCode == 3) {
 			return 0;
@@ -271,7 +271,7 @@ void ShowResidentList() {
 	}
 }
 
-void parkingLotScreen() {
+void AdminParkingLotScreen() {
 	cout << endl << endl << endl << endl;
 	cout << "                                  주 차 장                                  " << endl << endl << endl;
 	int parkingPossible = parkingAvailableNum();
@@ -279,7 +279,7 @@ void parkingLotScreen() {
 	printf(" * %s초록색%s : 빈 구역, %s붉은색%s : 입주민 주차 상태, %s청색%s : 방문 차량 주차 상태 \n", GREEN, DEF, RED, DEF, BLUE, DEF);
 	cout << "                          * 뒤로가기 : 스페이스바                          " << endl;
 	cout << endl << endl;
-	drewParkingLotToCarNum();
+	drewParkingLotToCarNum(1);
 
 	while (1) {
 		if (keyControl() == SUBMIT) {

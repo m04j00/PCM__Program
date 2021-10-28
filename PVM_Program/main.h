@@ -155,7 +155,7 @@ int mainMenu();
 void login();
 int afterLoginMain(const char*);
 int afterLoginMainMenu();
-
+void parkingLotScreen();
 //info.cpp
 void infoScreen();
 
@@ -186,7 +186,7 @@ int parkingLotState(int num, const char* space_num, const char* car_num, int);
 int delParkingLot(int num);
 void ResidentState(int what_s, const char* car_num, const char* space_num);
 void VisitingState(int what_s, const char* car_num, const char* space_num);
-void drewParkingLotToCarNum();
+void drewParkingLotToCarNum(int);
 int ExitVisitingCar(char* car_num);
 int isVisiter(char* car_num);
 VisitingCar VisitingGetCarInfo(const char* car_num, VisitingCar& car);
@@ -208,5 +208,5 @@ void VisitingExitCar(VisitingCar& car);
 void isVisitant();
 
 //admin
-void parkingLotScreen();
+void AdminParkingLotScreen();
 #endif

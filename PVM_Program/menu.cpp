@@ -12,8 +12,10 @@ int mainMenu() {
 	gotoxy(x, y + 1);
 	cout << "방문  차량";
 	gotoxy(x, y + 2);
-	cout << "사용  방법";
+	cout << "주  차  장";
 	gotoxy(x, y + 3);
+	cout << "사용  방법";
+	gotoxy(x, y + 4);
 	cout << "  종  료  ";
 	cout << endl << endl << endl;
 
@@ -30,7 +32,7 @@ int mainMenu() {
 			break;
 		}
 		case DOWN: {
-			if (y < 10) {
+			if (y < 11) {
 				gotoxy(x - 2, y);
 				cout << " ";
 				gotoxy(x - 2, ++y);

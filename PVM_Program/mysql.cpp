@@ -288,7 +288,6 @@ int VisitingList() {
 			else {
 				char query[100];
 				sprintf(query, "UPDATE parking_lot SET state = 0, car_info = 0, car_num = NULL WHERE space_num = '%s'", row[4]);
-				cout << query << endl;
 				int state1 = mysql_query(mysql, query);
 				if (state1 != 0) {
 					printf("error : %s", mysql_error(mysql));
@@ -372,7 +371,6 @@ int parkingAvailableNum() {
 	}
 }
 int parkingLotState(int isState, const char* space_num, const char* car_num, int isResi) {
-	cout << "parking lot state : " << car_num << endl;
 	if (isState == 1) {
 		char query1[100];
 		sprintf(query1, "SELECT * FROM parking_lot where space_num = '%s'", space_num); // 입력된 주차구역이 존재하는 레코드인지
@@ -439,13 +437,12 @@ void VisitingState(int what_s, const char* space_num, const char* car_num) {
 //│  A001  │
 //│  0000  │
 //└────────┘
-void drewParkingLotToCarNum() {
+void drewParkingLotToCarNum(int isAdmin) {
 	char* ptr_space[100]; // 주차 구역 이름 담긴 배열
 	char* ptr_car[100]; // 주차된 차량 번호 담긴 배열
 	int arr_state[100] = { 0, }; // 주차 상태라면 1 아니면 0
 	int arr_info[100] = { 0, }; // 방문 차량이라면 1 입주민면 0
 	char query[100];
-
 	sprintf(query, "select * from parking_lot");
 	int state = mysql_query(mysql, query);
 	res = mysql_store_result(mysql);
@@ -460,37 +457,61 @@ void drewParkingLotToCarNum() {
 		}
 		else ptr_car[i] = row[1];
 		if (row[2] == (string)"1") arr_state[i] = 1;
-		if (row[3] == (string)"1") arr_info[i] = 1;
-		//cout << ptr_space[i] << "   " << ptr_car[i] << "   " << arr_state[i] << "   " << arr_info[i] << endl;
+		if(isAdmin)
+			if (row[3] == (string)"1") arr_info[i] = 1;
 		i++;
 	}
 	int k = 0; // 주차 구역
 	int j = 0; // 차량 번호 
-	int what_s = 0; // state
-	int what_i = 0; // info
-	for (i = 0; i < 20; i++) {
-		cout << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << endl;
-		for (int z = 0; z < 5; z++) {
-			if (arr_info[k] == 1) {
-				printf(" │   %s%s%s   │  ", BLUE, ptr_space[k++], DEF);
+	if (isAdmin){
+		for (i = 0; i < 20; i++) {
+			cout << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << endl;
+			for (int z = 0; z < 5; z++) {
+				if (arr_info[k] == 1) {
+					printf(" │   %s%s%s   │  ", BLUE, ptr_space[k++], DEF);
+				}
+				else if (arr_state[k] == 1) {
+					printf(" │   %s%s%s   │  ", RED, ptr_space[k++], DEF);
+				}
+				else printf(" │   %s%s%s   │  ", GREEN, ptr_space[k++], DEF);
 			}
-			else if (arr_state[k] == 1) {
-				printf(" │   %s%s%s   │  ", RED, ptr_space[k++], DEF);
+			cout << endl;
+			for (int z = 0; z < 5; z++) {
+				if (arr_info[j] == 1) {
+					printf(" │   %s%s%s   │  ", BLUE, ptr_car[j++], DEF);
+				}
+				else if (arr_state[j] == 1) {
+					printf(" │   %s%s%s   │  ", RED, ptr_car[j++], DEF);
+				}
+				else printf(" │   %s%s%s   │  ", GREEN, ptr_car[j++], DEF);
 			}
-			else printf(" │   %s%s%s   │  ", GREEN, ptr_space[k++], DEF);
+			cout << endl;
+			cout << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << endl;
 		}
-		cout << endl;
-		for (int z = 0; z < 5; z++) {
-			if (arr_info[j] == 1) {
-				printf(" │   %s%s%s   │  ", BLUE, ptr_car[j++], DEF);
+		return;
+	}
+	else {
+		for (i = 0; i < 20; i++) {
+			cout << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << "  " << " ┌──────────┐" << endl;
+			for (int z = 0; z < 5; z++, k++) {
+				if (arr_state[k] == 1) {
+					printf(" │   %s%s%s   │  ", RED, ptr_space[k], DEF);
+				}
+				else printf(" │   %s%s%s   │  ", GREEN, ptr_space[k], DEF);
 			}
-			else if (arr_state[j] == 1) {
-				printf(" │   %s%s%s   │  ", RED, ptr_car[j++], DEF);
+			cout << endl;
+			for (int z = 0; z < 5; z++, j++) {
+				if (arr_state[j] == 1) {
+					printf(" │   %s%s%s   │  ", RED, ptr_car[j], DEF);
+				}
+				else {
+					printf(" │          │  ");
+				}
 			}
-			else printf(" │   %s%s%s   │  ", GREEN, ptr_car[j++], DEF);
+			cout << endl;
+			cout << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << endl;
 		}
-		cout << endl;
-		cout << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << " └──────────┘  " << endl;
+		return;
 	}
 }
 int ExitVisitingCar(char* car_num) {
