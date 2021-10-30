@@ -16,9 +16,7 @@ void isVisitant() {
 		if (YorN == 'Y' || YorN == 'y') {
 			cout << endl;
 			char* input_num = (char*)malloc(sizeof(char) * 20);
-			//cout << "                          차량 번호를 입력해주세요                         " << endl;
 			cout << "                   차량 번호를 입력해주세요 : ";
-			//cout << "                          >> ";
 			cin >> input_num;
 			cout << endl << endl;
 			int success = isVisiter(input_num); // 존재(-1), 없음(0)
@@ -72,8 +70,6 @@ void visitingInit() {
 	//사용 변수
 	char* carNum = (char*)malloc(sizeof(char) * 10);
 	char* phoneNum = (char*)malloc(sizeof(char) * 20);
-	int period;
-
 	cout << endl << endl << endl << endl;
 
 	cout << "                               방문 차량 등록                              ";
@@ -98,27 +94,13 @@ void visitingInit() {
 	cout << "                   전화 번호 : ";
 	cin >> phoneNum;
 	cout << endl << "                                    ---                                    " << endl << endl;
-	printf("%s                방문 차량은 최대 3일까지 주차할 수 있습니다.               %s", GREEN, DEF);
-	printf("%s                        3일일 경우 %s3%s만 입력해주세요.                       %s\n\n", GREEN, RED, GREEN, DEF);
-	while (true) {
-		gotoxy(0, 16);
-		cout << "                                                  ";
-		gotoxy(0, 19);
-		cout << "                                                                             ";
-		gotoxy(0, 16);
-		cout << "                   방문 기간 : ";
-		cin >> period;
-		if (period > 0 && period <= 3) break;
-
-		gotoxy(0, 19);
-		printf("%s  1 ~ 3 사이의 숫자만 입력해주세요. 최대 머무를 수 있는 기간은 3일입니다.  %s", RED, DEF);
-		Sleep(1500);
-	}
+	printf("%s                  방문 차량은 하루동안 주차할 수 있습니다.                 %s", GREEN, DEF);
+	printf("%s                       최대 하루 뒤 출차해야 합니다.                       %s\n\n", GREEN, DEF);
 
 	cout << endl << endl;
-	VisitingCar car(carNum, phoneNum, 0, period, buf, NULL);
-	visitingCarRegister(carNum, phoneNum, period);
-	Sleep(1500);
+	VisitingCar car(carNum, phoneNum, 0, 1, buf, NULL);
+	visitingCarRegister(carNum, phoneNum, 1);
+	Sleep(2000);
 	gotoParkingLot(car, parkingAvailNum);
 	system("cls");
 	return;

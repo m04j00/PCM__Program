@@ -144,21 +144,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="admin.cpp" />
-    <ClCompile Include="carM.cpp" />
     <ClCompile Include="console.cpp" />
     <ClCompile Include="info.cpp" />
     <ClCompile Include="login.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="mysql.cpp" />
-    <ClCompile Include="parkingM.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="residentPM.cpp" />
     <ClCompile Include="visitingCar.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="airtight.h" />
-    <ClInclude Include="cmgt.h" />
-    <ClInclude Include="pmgt.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

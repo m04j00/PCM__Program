@@ -1,5 +1,4 @@
 #include "main.h"
-#include "cmgt.h"
 #include <cstring>  
 
 int adminScreen() {
@@ -7,7 +6,6 @@ int adminScreen() {
 
 	while (1) {
 		cout << endl << endl << endl << endl;
-		//cout << "---------------------------------包府磊 芒---------------------------------";
 		cout << "                                 包府磊 芒                                 ";
 		int menuCode = adminMenu();
 		if (menuCode == 0) {

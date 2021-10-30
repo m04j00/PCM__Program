@@ -27,12 +27,6 @@
     <ClCompile Include="info.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="parkingM.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="carM.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="admin.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -51,15 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="pmgt.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="cmgt.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="airtight.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>

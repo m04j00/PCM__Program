@@ -39,11 +39,15 @@ insert into user values ('admin1','aaaa', 1);
 insert into user values ('admin2', 'ssss', 1);
 
 -- 입주민 계정
-insert into user values ('101', '101', 0);
-insert into user values ('resident', 'aaaa', 0);
+insert into user values ('1001', '1001', 0);
+insert into resident values ('1001', '1001', '010-5135-3215', '101','501','A007',1);
+insert into parking_lot values ('A007', '1001', 1, 0);
+insert into user values ('5252', '5252', 0);
+insert into resident values ('5252', '5252', '010-0125-8321', '103','201','B001',1);
+insert into parking_lot values ('B001', '5252', 1, 0);
 
 -- 방문 차량
-insert into visiting values ('1122', '010-1122-1122', '2021-10-20', 2);
-insert into visiting values ('1133', '010-1133-1133', '2021-10-19', 2);
-insert into visiting values ('1144', '010-1144-1144', '2021-10-19', 3);
-insert into visiting values ('1155', '010-1155-1155', '2021-10-19', 1);
+insert into visiting values ('1122', '010-1122-1122', '2021-11-09', 2, 'D001', 1);
+insert into visiting values ('1133', '010-1133-1133', '2021-11-08', 2, 'B009', 1);
+UPDATE parking_lot SET car_info = 1, state = 1, car_num = '1122' where space_num = 'D001';
+UPDATE parking_lot SET car_info = 1, state = 1, car_num = '1133' where space_num = 'B009';

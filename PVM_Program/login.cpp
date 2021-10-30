@@ -1,5 +1,4 @@
 #include "main.h"
-#include "cmgt.h"
 void login() {
 	system("cls");
 	char* id = (char*)malloc(sizeof(char) * 16);
@@ -14,17 +13,6 @@ void login() {
 	cout << endl;
 	cout << "                      비밀번호 : ";
 	cin >> pw;
-	// 비밀번호 가리기
-	//int i = 0;
-	//int buf = 0;
-	//for (i = 0; buf != 13; i++) {
-	//	pw[i] = _getch();
-	//	cout << "*";
-	//	buf = (int)pw[i];
-	//}
-	//pw[i - 1] = '\0'; //마지막 문자 NULL 문자로 치환
-	//char num, char phoneNum, int state,  char id, char pw, char building, char unit
-	//Resident rd("1234", "010-1111-1111", 0, id, pw, "101", "101");
 
 	int isUser = FindUser(id, pw);
 	cout << endl << endl;

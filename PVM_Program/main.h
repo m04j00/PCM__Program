@@ -51,7 +51,6 @@ public:
 	int parkingCheck() {
 		cout << "                                   " << carNum;
 		if (parkingState == 0) {
-			//cout << "----------------------------------- 0000"  << carNum;
 			cout << endl << endl;
 			cout << "                             차량이 입차합니다.                            ";
 			parkingState = 1;
@@ -66,7 +65,6 @@ public:
 		return -1;
 	}
 	void showCarNum() {
-		//cout << "-----------------------------차량 번호 : 0000 -----------------------------" << carNum;
 		cout << "                             차량 번호 : " << carNum;
 	}
 	int getState() {
@@ -159,7 +157,6 @@ void login();
 int afterLoginMain(const char*);
 int afterLoginMainMenu();
 void parkingLotScreen();
-int MgtMenu();
 
 //info.cpp
 void infoScreen();
@@ -215,4 +212,13 @@ void isVisitant();
 //admin
 void AdminParkingLotScreen();
 int gotoParkingLot(char* car_num);
+int carMgtMenu();
+int adminScreen();
+int adminMenu();
+int carRegistration();
+int carDelReg();
+void ShowResidentList();
+int ResiMgtScreen();
+void VisitingMgtScreen();
+int ResidentMgtMenu();
 #endif
